@@ -41,7 +41,7 @@
             [sae preloadEffect:@"timeout.caf"];
         }
         
-		brightness = 35;
+		brightness = 205;
 		
 		[[CCDirector sharedDirector] setAlphaBlending:YES];
 		
@@ -52,18 +52,22 @@
 		
 		CGSize screenSize = [[CCDirector sharedDirector] winSize];
 
-		CCSprite* background = [CCSprite spriteWithFile:@"background.png" rect:CGRectMake(0, 0, 480, 320)];
+		CCSprite* background = [CCSprite spriteWithFile:@"background.png"]; // rect:CGRectMake(0, 0, 480, 320)];
+        background.scale = 0.5;
 
-		ccTexParams params = {GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT};
-		[[background texture] setTexParameters: &params];
+//		ccTexParams params = {GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT};
+//		[[background texture] setTexParameters: &params];
+  //      background.color = ccc3(55, 55, 055);
 		
 		background.position = CGPointMake(screenSize.width / 2, screenSize.height / 2);
 		
-		[self addChild:background z:-2];
 		
-		CCLayerColor* colorLayer = [CCLayerColor layerWithColor:ccc4(brightness, brightness, brightness, 180)];
-		[background setBlendFunc: (ccBlendFunc) { GL_SRC_ALPHA, GL_ONE }];
-		[self addChild:colorLayer z:-1 tag:10];
+//		CCLayerColor* colorLayer = [CCLayerColor layerWithColor:ccc4(brightness, brightness, 0, 255)];
+//		[background setBlendFunc: (ccBlendFunc) { GL_SRC_ALPHA, GL_ONE }];
+//		[self addChild:colorLayer z:-2 tag:10];
+
+		[self addChild:background z:-1];
+
 		
 		[self addChild: [gameController view]];
 		
@@ -95,6 +99,9 @@
 	}
 	return self;
 }
+
+
+
 /*
 - (void)menuItem1Touched:(CCMenuItem *)sender {
 	blendFunc++;

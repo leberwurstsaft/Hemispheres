@@ -19,7 +19,7 @@
 	if ((self = [super init])) {
 		
 		model = [[RightBrainModel alloc] init];
-		
+        
         isLeftController = NO;
         
         flashingView = [CCSprite spriteWithSpriteFrameName:@"flash"];
@@ -32,11 +32,11 @@
 		right = [ColorSprite sprite];
         operation = [CCLabelBMFont labelWithString:@"+" fntFile:@"numberfont.fnt"];
 
-		left.position = ccp(50, 210);
+		left.position = ccp(50, 215);
 		[left setSolution: RAND_1_12];
 		[view addChild:left z:2];
 		
-		right.position = ccp(190, 210);
+		right.position = ccp(190, 215);
 		[right setSolution: RAND_1_12];
 		[view addChild:right z:2];
 		
@@ -44,15 +44,14 @@
 		[view addChild: operation z:2];
         
         score = [CCLabelBMFont labelWithString:@"0" fntFile:@"scorefont.fnt"];
-        score.anchorPoint = ccp(1.0, 0.5);
-        score.position = ccp(220, 285);
+        //score.anchorPoint = ccp(1.0, 0.5);
+        score.position = ccp(120, 285);
         [view addChild:score];
         
 		timerView = [[TimerView alloc] init];
-		timerView.view.position = ccp(100, 135);
-		[timerView.view setScaleX: -1]; 
+		timerView.view.position = ccp(122, 135);
+		[timerView.view setScaleX: -1.0]; 
 		[view addChild: timerView.view];
-		[timerView countdown: [NSNumber numberWithFloat: 8.0]];
 		
 		solutionButtons = [[NSMutableArray alloc] init];
 		for (int i = 0; i < 3; i++) {

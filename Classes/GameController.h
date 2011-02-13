@@ -16,6 +16,8 @@
 	
 	BrainController *rightBrainController;
 	BrainController	*leftBrainController;
+    
+    CCNode *whatNextLayer;
 
 	double	roundTime;
 	
@@ -34,10 +36,12 @@
 - (void)pauseGame;
 - (void)resumeGame;
 
+- (void)showWhatNextLayer;
+
 - (void)prepareGame;
 - (void)beginNewGame;
 - (void)endGame;
-- (void)enterScores;
+//- (void)enterScores;
 //- (void)reportScore:(int64_t)score forCategory:(NSString*)category;
 - (void)playAgain;
 - (void)exitGame;

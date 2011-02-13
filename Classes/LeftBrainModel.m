@@ -49,7 +49,7 @@ int i;
                 randomNumber = 1 + arc4random()%((int)floor(9 / taskLeftNumber));
                 taskRightNumber = randomNumber;
                 taskSolution = taskLeftNumber * taskRightNumber;
-                taskOperation = @"×";
+                taskOperation = @"x"; //@"×";
                 break;
             case 3:
                 // division

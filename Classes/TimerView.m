@@ -20,32 +20,49 @@
 - (id)init {
 	if ((self = [super init])) {
 		view = [CCNode node];
-		middlePart = [CCSprite spriteWithFile:@"middle.png"];
+        
+        
+        timerBorder = [CCSprite spriteWithFile:@"timerbar.png"];
+        timerBorder.position = ccp(0.0, -1.0);
+        timerBorder.color = ccc3(178, 178, 178);
+        [view addChild: timerBorder];
+        
+		middlePart = [CCSprite spriteWithFile:@"timer_middle.png"];
+        
 		middlePart.anchorPoint = ccp(1.0, 0.5);
-		middlePart.position = ccp(50.5, 0.0);
+		middlePart.position = ccp(67.5, 0.0);
 		[middlePart setColor: ccc3(0, 255, 0)];
 		
-		leftPart = [CCSprite spriteWithFile:@"left.png"];
-		rightPart = [CCSprite spriteWithFile:@"right.png"];
+		leftPart = [CCSprite spriteWithFile:@"timer_cap.png"];
+		rightPart = [CCSprite spriteWithFile:@"timer_cap.png"];
 		[leftPart setColor: ccc3(0, 255, 0)];
 		[rightPart setColor: ccc3(0, 255, 0)];
 		
 		leftPart.anchorPoint = ccp(1.0, 0.5);
-		leftPart.position = ccp(-50, 0);
+		leftPart.position = ccp(-67, 0);
 		
 		rightPart.anchorPoint = ccp(0.0, 0.5);
-		rightPart.position = ccp(50, 0);
+		rightPart.position = ccp(67, 0);
+        rightPart.flipX = YES;
 		
 		circle = [CCSprite spriteWithFile:@"circle.png"];
-		circle.position = ccp(50, 0);
+		circle.position = ccp(67, 0);
 		circle.visible = NO;
 		[circle setColor: ccc3(255, 0, 0)];
-		
-		[view addChild: leftPart];
+        
+        [view addChild: leftPart];
 		[view addChild: rightPart];
 		[view addChild: middlePart];
 		[view addChild: circle];
-		
+
+        
+        CCSprite *timerBorderGlass = [CCSprite spriteWithFile:@"timerbar_glass.png"];
+        timerBorderGlass.position = ccp(0.0, 0.0);
+        timerBorderGlass.scaleX = 1.05;
+        timerBorderGlass.opacity = 130;
+        timerBorderGlass.blendFunc = (ccBlendFunc){GL_SRC_ALPHA, GL_ONE};
+        [view addChild: timerBorderGlass];
+        
 	//	[self setPercentage: 100.0];
 	}
 	return self;
@@ -61,8 +78,8 @@
 	float timeOne = 9 * time / 10;
 	float timeTwo = time - timeOne;
 	
-	CCScaleTo *shrink = [CCScaleTo actionWithDuration: timeOne scaleX: 2.0/101.0 scaleY:1.0];
-	CCMoveTo *move = [CCMoveBy actionWithDuration: timeOne position: ccp(99, 0)];
+	CCScaleTo *shrink = [CCScaleTo actionWithDuration: timeOne scaleX: 2.0/135.0 scaleY:1.0];
+	CCMoveTo *move = [CCMoveBy actionWithDuration: timeOne position: ccp(133, 0)];
 	
 	CCScaleTo *scaleCircle = [CCScaleTo actionWithDuration: timeTwo scale: 0.0];
 	CCFadeOut *fadeOut = [CCFadeOut actionWithDuration: timeTwo];
@@ -120,19 +137,18 @@
 	[[CCActionManager sharedManager] removeAllActionsFromTarget: rightPart];
 	[[CCActionManager sharedManager] removeAllActionsFromTarget: circle];
 	
-	leftPart.position = ccp(-50, 0);
+	leftPart.position = ccp(-67, 0);
 	leftPart.visible = YES;
 	leftPart.color = ccc3(0, 255, 0);
 	
-	middlePart.position = ccp(50.5, 0.0);
+	middlePart.position = ccp(67.5, 0.0);
 	middlePart.scale = 1.0;
 	middlePart.visible = YES;
 	middlePart.color = ccc3(0, 255, 0);
 	
-	rightPart.position = ccp(50, 0);
+	rightPart.position = ccp(67, 0);
 	rightPart.visible = YES;
-	rightPart
-	.color = ccc3(0, 255, 0);
+	rightPart.color = ccc3(0, 255, 0);
 
 	circle.scale = 1.0;
 	circle.visible = NO;

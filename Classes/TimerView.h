@@ -11,6 +11,8 @@
 
 @interface TimerView : NSObject {
 	CCNode *view;
+    
+    CCSprite *timerBorder;
 	CCSprite *middlePart;
 	CCSprite *leftPart;
 	CCSprite *rightPart;

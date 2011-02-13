@@ -9,6 +9,8 @@
 #import "BrainController.h"
 #import "SolutionButton.h"
 
+#define  kHemiDefaultPitch 0.7
+
 @implementation BrainController
 
 @synthesize controller, view;
@@ -16,7 +18,7 @@
 - (id)init {
 	if ((self = [super init])) {
 		view = [CCNode node];
-        currentPitch = 0.7;
+        currentPitch = kHemiDefaultPitch;
 	}
 	return self;
 }
@@ -118,10 +120,10 @@
 }
 
 - (void)reset {
-	//NSLog(@"reset left controller");
 	[model reset];
-	/*[livesMeter reset];
-	[scoreView setText: @"0"];*/
+    [score setString:@"0"];
+    currentPitch = kHemiDefaultPitch;
+	//[livesMeter reset];
 }
 
 - (void)pause {
@@ -130,12 +132,11 @@
 }
 
 - (void)resume {
-	//[timerView resumeTimer];
-	
+	[timerView resume];
 }
 
 - (void)go {
-	//[timerView reset: [model time]];
+	[timerView countdown: [NSNumber numberWithFloat: [model time]]];
 }
 
 - (int)livesRemaining {
