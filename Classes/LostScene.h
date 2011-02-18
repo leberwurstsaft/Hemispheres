@@ -10,7 +10,8 @@
 #import "cocos2d.h"
 
 @interface LostScene : CCLayer {
-    
+    CCLabelTTF *funFactText;
+    CCSprite *funFactBubble;
 }
 
 +(id) scene;

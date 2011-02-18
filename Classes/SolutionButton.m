@@ -7,6 +7,7 @@
 //
 
 #import "SolutionButton.h"
+#import "SolutionSprite.h"
 #import "ColorSprite.h"
 #import "NumberSprite.h"
 #import "cocos2d.h"
@@ -17,6 +18,13 @@ typedef enum
 	kButtonTypeNumber = 1,
 } ButtonTypes;
 
+@interface SolutionButton()
+
+- (void)initParticleSystem;
+
+@end
+
+
 @implementation SolutionButton
 
 @synthesize representation;
@@ -26,16 +34,39 @@ typedef enum
 
 - (id)initWithColor {
 	if ( ( self = [super init])) {
+
 		representation = [ColorSprite sprite];
+        
+        [self initParticleSystem];
+        particleSystem.blendFunc = (ccBlendFunc){GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
+
+        buttonType = kButtonTypeColor;
 	}
 	return self;
 }
 
 - (id)initWithNumber {
 	if ( ( self = [super init])) {
+
 		representation = [NumberSprite sprite];
+        
+        [self initParticleSystem];
+        particleSystem.startColor = (ccColor4F){1.0, 1.0, 1.0, 0.6};
+		particleSystem.endColor = (ccColor4F){1.0, 1.0, 1.0, 0.3};
+        particleSystem.blendFunc = (ccBlendFunc){GL_SRC_ALPHA, GL_ONE};
+
+        buttonType = kButtonTypeNumber;
 	}
 	return self;
+}
+
+- (void)initParticleSystem {
+    particleSystem = [CCParticleSystemQuad particleWithFile:@"explosion.plist"];
+
+    particleSystem.positionType = kCCPositionTypeFree;
+    particleSystem.position = ccp(representation.contentSize.width/2.0, representation.contentSize.height/2.0);
+    
+    [representation addChild: particleSystem z:-1];
 }
 
 - (int)solution {
@@ -53,7 +84,7 @@ typedef enum
 	ccColor4F startColor;
 	ccColor4F endColor;
 	
-	if ([representation isKindOfClass: [ColorSprite class]]) {
+	if (buttonType == kButtonTypeColor) {
 		CCLOG(@"color class");
 		switch (solution) {
 			case 0:
@@ -97,41 +128,13 @@ typedef enum
 				break;
 		}
 		endColor = startColor;
-		endColor.a = 0.7;
-	}
-	else {
-		startColor = (ccColor4F){1.0, 0.77, 0.5, 0.6};
-		endColor = (ccColor4F){1.0, 1.0, 1.0, 0.3};
+		endColor.a = 0.5;
+        
+        particleSystem.startColor = startColor;
+        particleSystem.endColor = endColor;	
 	}
 
-	// remove any previous particle FX 
-	//[[representation parent] removeChildByTag:99 cleanup:YES];
-	CCParticleSystem* system;
-	system = [CCParticleSystemQuad particleWithFile:@"explosion.plist"];
-	system.positionType = kCCPositionTypeFree;
-	system.position = representation.position;
-	system.startColor = startColor;
-	system.endColor = endColor;
-	
-	//system.blendFunc = (ccBlendFunc){GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA};  // bright background
-	// DST_ALPHA  ONE_MINUS_SRC_ALPHA  ist auch gut, bei beiden helligkeiten
-	
-/*
-    int b1 = [[NSUserDefaults standardUserDefaults] integerForKey:@"HemiBlendFuncOne"];
-	int b2 = [[NSUserDefaults standardUserDefaults] integerForKey:@"HemiBlendFuncTwo"];
-*/
-    if ([representation isKindOfClass:[ColorSprite class]]) {
-        system.blendFunc = (ccBlendFunc){GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
-    }
-    else {
-        system.blendFunc = (ccBlendFunc){GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA};
-    }
-    system.autoRemoveOnFinish = YES;
-	
-	[[representation parent] addChild: system z:1 tag:99];
+    [particleSystem resetSystem];
 }
-
-
-
 
 @end

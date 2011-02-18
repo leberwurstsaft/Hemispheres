@@ -10,12 +10,14 @@
 #import "SolutionModel.h"
 #import "SolutionSprite.h"
 #import "GameController.h"
-#import "cocos2d.h"
+
+#import "TimerNode.h"
 #import "TimerView.h"
 
 #import "SimpleAudioEngine.h"
 #import "CocosDenshion.h"
 #import "CDAudioManager.h"
+#import "cocos2d.h"
 
 
 @interface BrainController : NSObject {
@@ -26,11 +28,11 @@
 	SolutionSprite *left;
 	SolutionSprite *right;
     CCLabelBMFont *operation;
-    CCLabelBMFont *score;
     
     CCSprite *flashingView;
 
 	TimerView *timerView;
+    TimerNode *timer;
 	
 	NSMutableArray *solutionButtons;
 	
@@ -45,7 +47,6 @@
 
 @property (nonatomic, assign) GameController *controller;
 @property (nonatomic, readonly) CCNode *view;
-
 
 - (void)effect:(int)i;
 - (void)flash:(BOOL)_right;

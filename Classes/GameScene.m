@@ -17,21 +17,19 @@
 // GameScene implementation
 @implementation GameScene
 
-+(id) scene
-{
-	CCScene *scene = [CCScene node];
-	
-	GameScene *layer = [GameScene node];
-	
-	[scene addChild: layer];
-	
-	return scene;
-}
-
 -(id) init
 {
-	if( (self = [super init] )) {
-        
+	if((self = [super init])) {
+
+        CCSpriteFrameCache* frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
+		[frameCache addSpriteFramesWithFile:@"textures.plist"];
+
+		[[CCDirector sharedDirector] setAlphaBlending:YES];
+
+        gameLayer = [GameLayer node];
+        [self addChild: gameLayer];
+        gameLayer.tag = 1;
+                
         SimpleAudioEngine *sae = [SimpleAudioEngine sharedEngine];
         if (sae != nil) {
             [sae preloadEffect:@"ka.caf"];
@@ -41,36 +39,8 @@
             [sae preloadEffect:@"timeout.caf"];
         }
         
-		brightness = 205;
-		
-		[[CCDirector sharedDirector] setAlphaBlending:YES];
-		
-		CCSpriteFrameCache* frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
-		[frameCache addSpriteFramesWithFile:@"textures.plist"];
-		
-		gameController = [[GameController alloc] init];
-		
-		CGSize screenSize = [[CCDirector sharedDirector] winSize];
 
-		CCSprite* background = [CCSprite spriteWithFile:@"background.png"]; // rect:CGRectMake(0, 0, 480, 320)];
-        background.scale = 0.5;
-
-//		ccTexParams params = {GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT};
-//		[[background texture] setTexParameters: &params];
-  //      background.color = ccc3(55, 55, 055);
-		
-		background.position = CGPointMake(screenSize.width / 2, screenSize.height / 2);
-		
-		
-//		CCLayerColor* colorLayer = [CCLayerColor layerWithColor:ccc4(brightness, brightness, 0, 255)];
-//		[background setBlendFunc: (ccBlendFunc) { GL_SRC_ALPHA, GL_ONE }];
-//		[self addChild:colorLayer z:-2 tag:10];
-
-		[self addChild:background z:-1];
-
-		
-		[self addChild: [gameController view]];
-		
+        
         /*
 		[CCMenuItemFont setFontName:@"Helvetica-BoldOblique"];
 		[CCMenuItemFont setFontSize:16];
@@ -93,14 +63,20 @@
 		[menu alignItemsVerticallyWithPadding:10];
 		[menu alignItemsInColumns: [NSNumber numberWithInt: 2], nil];*/
 		
-		self.isTouchEnabled = YES;
-		
+		gameLayer.isTouchEnabled = NO;
 
 	}
 	return self;
 }
 
+- (void)setTouchEnabled:(BOOL)_enable {
+    CCLOG(@"touch enabled: %@", _enable ? @"YES": @"NO");
+    gameLayer.isTouchEnabled = _enable;
+}
 
+- (void)showDrapes:(BOOL)_show {
+    [gameLayer showDrapes:_show];
+}
 
 /*
 - (void)menuItem1Touched:(CCMenuItem *)sender {
@@ -249,27 +225,95 @@
 											  swallowsTouches:YES];
 }*/
 
+
+
+@end
+
+@implementation GameLayer
+
+- (id)init {
+    if ((self = [super init])) {
+        gameController = [[GameController alloc] init];
+		
+		CGSize screenSize = [[CCDirector sharedDirector] winSize];
+        
+        [CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_RGB565];
+        
+		CCSprite* background = [CCSprite spriteWithFile:@"background.png"]; // rect:CGRectMake(0, 0, 480, 320)];
+        [CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_Default];
+        
+        //		ccTexParams params = {GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT};
+        //		[[background texture] setTexParameters: &params];
+		
+		background.position = CGPointMake(screenSize.width / 2, screenSize.height / 2);
+        
+		[self addChild:background z:-1];
+        
+		
+		[self addChild: [gameController view]];
+    }
+    return self;
+}
+
 - (CGPoint)locationFromTouch:(UITouch *)touch {
 	CGPoint touchLocation = [touch locationInView: [touch view]];
 	return [[CCDirector sharedDirector] convertToGL:touchLocation];
 }
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	UITouch *touch = [touches anyObject];
 	
-	CGPoint touchLocation = [self locationFromTouch:touch];
+    
+    if ([touches count] == 1) {
+        UITouch *touch = [touches anyObject];
+        CGPoint touchLocation = [self locationFromTouch:touch];
 
-	for (int i = 0; i < 3; i++) {
-		if (ccpDistance([[gameController.leftBrainController.view getChildByTag:i] position], touchLocation) < kHitDistance) {
-			[gameController.leftBrainController effect: i];
-			[gameController.leftBrainController evaluate: i];
-		}
-		else if (ccpDistance(ccpAdd([[gameController.rightBrainController.view getChildByTag:i] position], ccp(240,0)), touchLocation) < kHitDistance) {
-			[gameController.rightBrainController effect: i];
-			[gameController.rightBrainController evaluate: i];
-		}
-	}
+        for (int i = 0; i < 3; i++) {
+            if (ccpDistance([[gameController.leftBrainController.view getChildByTag:i] position], touchLocation) < kHitDistance) {
+                [gameController.leftBrainController effect: i];
+                [gameController.leftBrainController evaluate: i];
+            }
+            else if (ccpDistance(ccpAdd([[gameController.rightBrainController.view getChildByTag:i] position], ccp(240,0)), touchLocation) < kHitDistance) {
+                [gameController.rightBrainController effect: i];
+                [gameController.rightBrainController evaluate: i];
+            }
+        }
+    }
+    else if ([touches count] == 2) {
+        
+        BOOL firstTouchWasLeft = NO;
+        BOOL firstTouchWasRight = NO;
+        
+        for (int i = 0; i < 2; i++) {
+            UITouch *touch = [[touches allObjects] objectAtIndex:i];
+            CGPoint touchLocation = [self locationFromTouch:touch];
+
+            for (int i = 0; i < 3; i++) {
+                if (ccpDistance([[gameController.leftBrainController.view getChildByTag:i] position], touchLocation) < kHitDistance && !firstTouchWasLeft) {
+                    firstTouchWasLeft = YES;
+                    [gameController.leftBrainController effect: i];
+                    [gameController.leftBrainController evaluate: i];
+                    break;
+                }
+                else if (ccpDistance(ccpAdd([[gameController.rightBrainController.view getChildByTag:i] position], ccp(240,0)), touchLocation) < kHitDistance && !firstTouchWasRight) {
+                    firstTouchWasRight = YES;
+                    [gameController.rightBrainController effect: i];
+                    [gameController.rightBrainController evaluate: i];
+                    break;
+                }
+            }
+            
+        }
+    }
 }
 
+- (void)showDrapes:(BOOL)_show {
+    [gameController showDrapes:_show];
+}
+
+- (void)dealloc {
+    CCLOG(@"dealloc GameLayer");
+    [gameController release];
+    [super dealloc];
+}
 
 @end

@@ -9,7 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
+@class BrainController;
+
 @interface TimerView : NSObject {
+    BrainController *controller;
+    
 	CCNode *view;
     
     CCSprite *timerBorder;
@@ -21,6 +25,7 @@
 }
 
 @property (nonatomic, assign) CCNode *view;
+@property (nonatomic, assign) BrainController *controller;
 
 - (void)pause;
 - (void)resume;

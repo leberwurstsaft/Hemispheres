@@ -9,17 +9,18 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
-@class BrainController;
+@class BrainController, InfoBarController, LivesMeter;
 
 @interface GameController : NSObject {
 	CCNode *view;
 	
 	BrainController *rightBrainController;
 	BrainController	*leftBrainController;
+    InfoBarController *infoBarController;
     
-    CCNode *whatNextLayer;
+    CCSprite *drapes;
 
-	double	roundTime;
+    double	roundTime;
 	
 	BOOL	gameRunning;
 	
@@ -33,12 +34,12 @@
 @property (nonatomic, readonly) BOOL gameRunning;
 @property (nonatomic, readonly) CCNode *view;
 
+- (void)showDrapes:(BOOL)_show;
 - (void)pauseGame;
 - (void)resumeGame;
 
-- (void)showWhatNextLayer;
+- (void)fadeToGray;
 
-- (void)prepareGame;
 - (void)beginNewGame;
 - (void)endGame;
 //- (void)enterScores;
@@ -49,5 +50,6 @@
 - (int)totalScore;
 - (double)roundTime;
 - (void)reset;
+
 
 @end

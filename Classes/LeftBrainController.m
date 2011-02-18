@@ -21,19 +21,25 @@
 		
         isLeftController = YES;
         
+        CCSprite *tafel = [CCSprite spriteWithFile:@"tafel.png"];
+        tafel.anchorPoint = ccp(0, 0.5);
+        tafel.position = ccp(6, 100);
+        tafel.rotation = -8.0;
+        [view addChild: tafel];
+        
         flashingView = [CCSprite spriteWithSpriteFrameName:@"flash"];
         flashingView.position = ccp(120,160);
         flashingView.opacity = 0;
         [view addChild:flashingView];
         
 		left = [NumberSprite sprite];
-        left.opacity = 220;
+        //left.opacity = 220;
 
 		right = [NumberSprite sprite];
-        right.opacity = 220;
+        //right.opacity = 220;
         
 		operation = [CCLabelBMFont labelWithString:@"-" fntFile:@"numberfont.fnt"];
-        operation.opacity = 220;
+        //operation.opacity = 220;
 
 		left.position = ccp(48, 210);
         left.rotation = kHemiBoardRotation;
@@ -50,40 +56,38 @@
         operation.rotation = kHemiBoardRotation;
 		[view addChild: operation z:2];
         
-        score = [CCLabelBMFont labelWithString:@"0" fntFile:@"scorefont.fnt"];
-        //score.anchorPoint = ccp(0.0, 0.5);
-        score.position = ccp(123, 285);
-        [view addChild:score];
-		
-		timerView = [[TimerView alloc] init];
-		timerView.view.position = ccp(122, 135);
-		[view addChild: timerView.view];
-		
+		/*timerView = [[TimerView alloc] init];
+        timerView.controller = self;
+		timerView.view.position = ccp(122, 135); */
+
+        
+        timer = [TimerNode node];
+        timer.position = ccp(122, 140);
+        timer.controller = self;
+        timer.rotation = kHemiBoardRotation;
+        [view addChild: timer];
+
+        /* perspective !
+        float x, y, z;
+        [[view camera] eyeX:&x eyeY:&y eyeZ:&z];
+		[[view camera] setEyeX:x-50 eyeY:y eyeZ:z];	
+        */
+        
 		solutionButtons = [[NSMutableArray alloc] init];
 		for (int i = 0; i < 3; i++) {
 			SolutionButton *button = [[SolutionButton alloc] initWithNumber];
-			button.representation.position = ccp(50 + i * 76, 48 + i * 11);
+			button.representation.position = ccp(60 + i * 74, 46 + i * 11);
 			[button setSolution: i];
-            button.representation.opacity = 220;
+            
 			[button.representation setTag: i];
+
             button.representation.rotation = kHemiBoardRotation;
 			[view addChild: button.representation z:2];
 			[solutionButtons addObject: button];
 			[button release];
 		}
-		
-	}
+    }
 	return self;
-}
-	
-- (void)dealloc {
-	for (SolutionButton *button in solutionButtons) {
-		[button release];
-	}
-	[solutionButtons release];
-	[model release];
-	
-	[super dealloc];
 }
 		
 @end

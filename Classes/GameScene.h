@@ -16,21 +16,22 @@
 #import "CocosDenshion.h"
 #import "CDAudioManager.h"
 
-@interface GameScene : CCLayer {
-	GameController *gameController;
-	
-	ColorSprite *leftColor;
-	ColorSprite *rightColor;
-	
-	NumberSprite *leftNumber;
-	NumberSprite *rightNumber;
-	
-	int brightness;
-	
+@interface GameLayer : CCLayer {
+    GameController *gameController;
+}
+
+- (void)showDrapes:(BOOL)_show;
+
+@end
+
+@interface GameScene : CCScene {
+    GameLayer *gameLayer;
+    
 	int blendFunc, blendFunc2;
 }
 
-+(id) scene;
+- (void)setTouchEnabled:(BOOL)_enable;
+- (void)showDrapes:(BOOL)_show;
 
 /*
 - (void)menuItem1Touched:(CCMenuItem *)sender;
@@ -41,3 +42,4 @@
  */
 
 @end
+

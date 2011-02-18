@@ -10,7 +10,6 @@
 #import "BrainController.h"
 
 @interface LeftBrainController : BrainController {
-
 }
 
 @end

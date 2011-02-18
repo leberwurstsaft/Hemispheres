@@ -6,10 +6,12 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "GameScene.h"
 #import "GameController.h"
 #import "LeftBrainController.h"
 #import "RightBrainController.h"
-#import "AWTextureFilter.h"
+#import "InfoBarController.h"
+#import "LivesMeter.h"
 #import "LostScene.h"
 
 @interface GameController()
@@ -17,6 +19,8 @@
 - (UIImage*) screenshotUIImage;
 - (CCTexture2D*) screenshotTexture;
 - (UIImage *)convertImageToGrayScale:(UIImage *)image;
+- (void)removeAllObservers;
+- (void)enableTouch:(BOOL)_enable;
 
 @end
 
@@ -29,65 +33,58 @@
 		view = [CCNode node];
         
         int offset = 240.0;
-        int gap = 2.0;
         
-        CCSprite *bg_left_shadow = [CCSprite spriteWithSpriteFrameName:@"bg_left_shadow"];
-        bg_left_shadow.position = ccp(239-offset+gap, 160);
-       // [view addChild: bg_left_shadow];
-
-        CCSprite *bg_right_shadow = [CCSprite spriteWithSpriteFrameName:@"bg_right_shadow"];
-        bg_right_shadow.position = ccp(240.5+offset-gap, 160);
-       // [view addChild: bg_right_shadow];
-        
-        CCSprite *bg_left = [CCSprite spriteWithSpriteFrameName:@"bg_left"];
-        bg_left.anchorPoint = ccp(0, 0.5);
-        bg_left.position = ccp(0-offset-gap, 160);
-       // [view addChild: bg_left];
-        
-        CCSprite *bg_right = [CCSprite spriteWithSpriteFrameName:@"bg_right"];
-        bg_right.anchorPoint = ccp(1, 0.5);
-        bg_right.position = ccp(480+offset+gap, 160);
-       // [view addChild: bg_right];
-        
+        infoBarController = [[InfoBarController alloc] init];
+        infoBarController.controller = self;
+        infoBarController.view.position = ccp(240, 440);
+        [view addChild: infoBarController.view z:3];
 
 		leftBrainController = [[LeftBrainController alloc] init];
+        [leftBrainController addObserver:infoBarController forKeyPath:@"model.score" options:NSKeyValueObservingOptionNew context:NULL];
+        [leftBrainController addObserver:infoBarController forKeyPath:@"model.lives" options:NSKeyValueObservingOptionNew context:NULL];
+        [leftBrainController addObserver:self forKeyPath:@"model.lives" options:NSKeyValueObservingOptionNew context:NULL];
+  
 		leftBrainController.controller = self;
         leftBrainController.view.position = ccp(-offset, 0);
-		[view addChild: leftBrainController.view];
+		[view addChild: leftBrainController.view z:0];
 
 		rightBrainController = [[RightBrainController alloc] init];
+        [rightBrainController addObserver:infoBarController forKeyPath:@"model.score" options:NSKeyValueObservingOptionNew context:NULL];
+        [rightBrainController addObserver:infoBarController forKeyPath:@"model.lives" options:NSKeyValueObservingOptionNew context:NULL];
+        [rightBrainController addObserver:self forKeyPath:@"model.lives" options:NSKeyValueObservingOptionNew context:NULL];
+        
 		rightBrainController.controller = self;
 		rightBrainController.view.position = ccp(240+offset,0);
-		[view addChild: rightBrainController.view];
-  
+		[view addChild: rightBrainController.view z:1];
+        
+        [self reset];
+       
         CCMoveBy *move = [CCMoveBy actionWithDuration: 0.6 position:ccp(offset, 0)];
         CCMoveBy *move_back = (CCMoveBy *)[move reverse];
         
-        CCEaseIn *move_ease = [CCEaseIn actionWithAction:[move copy] rate:3.0f];
-        CCEaseIn *move_ease_back = [CCEaseIn actionWithAction:[move_back copy] rate:3.0f];;
+        CCEaseIn *move_ease = [CCEaseIn actionWithAction:move rate:3.0f];
+        CCEaseIn *move_ease_back = [CCEaseIn actionWithAction:move_back rate:3.0f];
         
-        [leftBrainController.view runAction: [move_ease copy]];
-        [bg_left_shadow runAction: [move_ease copy]];
-        [bg_left runAction: [move_ease copy]];
+        CCMoveBy *move_down = [CCMoveBy actionWithDuration: 0.6 position: ccp(0, -100)];
+        CCEaseOut *move_down_ease = [CCEaseOut actionWithAction:move_down rate:3.0f];
         
-        [rightBrainController.view runAction: [move_ease_back copy]];
-        [bg_right_shadow runAction: [move_ease_back copy]];
-        [bg_right runAction: [move_ease_back copy]];
+        [leftBrainController.view runAction: move_ease];
+        [rightBrainController.view runAction: move_ease_back];
+        [infoBarController.view runAction: [CCSequence actions: [CCDelayTime actionWithDuration:0.5], move_down_ease, [CCCallFunc actionWithTarget:self selector:@selector(beginNewGame)],nil]];  
         
-        
-        whatNextLayer = [[CCNode node] retain];
-        CCSprite *playAgainButton = [CCSprite spriteWithFile:@"again_button.png"];
-        playAgainButton.anchorPoint = ccp(1.0, 0.5);
-        playAgainButton.position = ccp(480, 160);
-        [whatNextLayer addChild: playAgainButton];
-		
-		roundTime = 0;
+        drapes = [CCSprite spriteWithFile:@"drapes.png" rect: CGRectMake(0, 0, 480, 320)];
+        drapes.position = ccp(240, 160);
+        ccTexParams params = {GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT};
+        [[drapes texture] setTexParameters: &params];
+        drapes.visible = NO;
+        [view addChild: drapes z:2];
 
-        [self prepareGame];
-        [self beginNewGame];
+        
+		roundTime = 0;
 	}
 	return self;
 }
+
 
 - (int)totalScore {
 	return [leftBrainController score] + [rightBrainController score];
@@ -98,83 +95,104 @@
 		roundTime = [leftBrainController time];
 	}
 	
-	//NSLog(@"minus %f", cbrt((float)[self totalScore]) / 70.0);
 	roundTime -= cbrt((float)[self totalScore]) / 70.0;
 	if (roundTime < 1.0) {
 		roundTime = 1.0;
 	}
 	
-	if (roundTime > 1.0) {
-		//[soundEngine updateBeepPitch: roundTime];
-	}
-	
 	return roundTime;
 }
 
+- (void)showDrapes:(BOOL)_show {
+    if (gameRunning) {
+        drapes.visible = _show;
+    }
+}
+
 - (void)pauseGame {
-	NSLog(@"pause game");
-	[rightBrainController pause];
-	[leftBrainController pause];
-	//[soundEngine stopBeep];
+	CCLOG(@"pause game");
+    
+    [leftBrainController pause];
+    [rightBrainController pause];
 }
 
 - (void)resumeGame {
 	[leftBrainController resume];
 	[rightBrainController resume];
-	//[soundEngine makeBeep];
-}
-
-- (void)prepareGame {
-	[leftBrainController reset];
-	[rightBrainController reset];
-	[self reset];
-	[leftBrainController newTask];
-	[rightBrainController newTask];
 }
 
 - (void)reset {
 	roundTime = 0.0;
+	[leftBrainController reset];
+	[rightBrainController reset];
+    [leftBrainController newTask];
+    [rightBrainController newTask];
 }
 
 - (void)beginNewGame {
 	gameRunning = YES;
+    [self enableTouch:YES];
 	
 	[leftBrainController go];
 	[rightBrainController go];
-	//[soundEngine performSelector:@selector(makeBeep) withObject:nil afterDelay:1.0];
+}
+
+- (void)enableTouch:(BOOL)_enable {
+    id current = [[CCDirector sharedDirector] runningScene];
+    if ([current isKindOfClass:[GameScene class]]) {
+        [(GameScene*)current setTouchEnabled: _enable];
+    }
 }
 
 - (void)playAgain {
-	[self prepareGame];
+    [self reset];
 	[self performSelector:@selector(beginNewGame) withObject: nil afterDelay:0.02];	
 }
 
-- (void)endGame {
-	NSLog(@"end game");
-	gameRunning = NO;
-	
-	[self pauseGame];
 
-	[self showWhatNextLayer];
-    
-    id tran = [CCTransitionFadeBL transitionWithDuration:1.0 scene:[LostScene scene]];
-    
-    [[CCDirector sharedDirector] replaceScene: tran];
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    CCLOG(@"observing a value @ %@", keyPath);
+    if (gameRunning) {
+        if ([keyPath isEqual:@"model.lives"]) {
+            
+            int lives = [[change objectForKey: NSKeyValueChangeNewKey] intValue];
+            
+            if (lives == 0) {
+                [self performSelector:@selector(endGame) withObject:nil afterDelay:0.1];
+            }  
+        }
+    }
 }
 
-- (void)showWhatNextLayer {
-    CCLOG(@"blur");
+- (void)endGame {
+	CCLOG(@"end game");
+    if (gameRunning) {
+        gameRunning = NO;
+        [self removeAllObservers];
+        
+        [self pauseGame];
+        [self enableTouch:NO];
+        
+        [self fadeToGray];
+        
+        id tran = [CCTransitionFadeBL transitionWithDuration:1.0 scene:[LostScene scene]];
+        
+        [[CCDirector sharedDirector] replaceScene: tran];
+    }
+}
+
+- (void)fadeToGray {
+    [[CCDirector sharedDirector] setDisplayFPS:NO];
 	UIImage *img = [self convertImageToGrayScale: [self screenshotUIImage]];
+    [[CCDirector sharedDirector] setDisplayFPS:YES];
     
-	CCTexture2DMutable *mTex = [[CCTexture2DMutable alloc] initWithImage:img];
+	CCTexture2D *mTex = [[CCTexture2D alloc] initWithImage:img];
 	CCSprite *sprite = [CCSprite spriteWithTexture: mTex];
 	sprite.position = ccp(240, 160);
-	
-    [view addChild: sprite];
-
-    CCLOG(@"blur done");
-    
-  //  [desk release];
+	sprite.opacity = 0;
+    [view addChild: sprite z:10];
+    [sprite runAction: [CCFadeIn actionWithDuration:0.5]];
+    [mTex release];
 }
      
 - (UIImage *)convertImageToGrayScale:(UIImage *)image
@@ -307,13 +325,22 @@
 }
 */
 
+- (void)removeAllObservers {
+    [leftBrainController removeObserver:self forKeyPath:@"model.lives"];
+    [rightBrainController removeObserver:self forKeyPath:@"model.lives"];
+    [leftBrainController removeObserver:infoBarController forKeyPath:@"model.score"];
+    [rightBrainController removeObserver:infoBarController forKeyPath:@"model.score"];
+    [leftBrainController removeObserver:infoBarController forKeyPath:@"model.lives"];
+    [rightBrainController removeObserver:infoBarController forKeyPath:@"model.lives"];
+}
 
 - (void)dealloc {
-    [whatNextLayer release];
+    CCLOG(@"dealloc GameController");
 	[rightBrainController release];
 	[leftBrainController release];
-//	[lostGameController release];
-//	[soundEngine release];
+
+    [infoBarController release];
+
     [super dealloc];
 }
 

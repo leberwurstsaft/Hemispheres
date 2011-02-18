@@ -42,20 +42,20 @@
 
 - (void)evaluate:(int)number {
 	if ([model solution] == [[solutionButtons objectAtIndex: number] solution]) {
-		CCLOG(@"Bingo!");
-		[model increaseScore];
-		[score setString: [NSString stringWithFormat:@"%d", [model score]]];
-		[self flash: YES];
-        
-        currentPitch += 0.002;
-        [[SimpleAudioEngine sharedEngine] playEffect:@"pling.caf" pitch:currentPitch pan:isLeftController ? -1.0 : 1.0 gain:1.0];
+        if (model.lives > 0) {
+            CCLOG(@"Bingo!");
+            [model increaseScore];
+            [self flash: YES];
+            currentPitch += 0.001;
+            [[SimpleAudioEngine sharedEngine] playEffect:@"pling.caf" pitch:currentPitch pan:isLeftController ? -1.0 : 1.0 gain:1.0];
+        }
 	}
 	else {
 		CCLOG(@"Zonk!!");
 		[model reduceLives];
 		[self flash: NO];
         
-        NSString *soundFileName;
+        NSString *soundFileName = @"";;
         switch ([model lives]) {
             case 0:
                 soundFileName = @"ow.caf";
@@ -71,20 +71,17 @@
         if ([model lives] >= 0) {
             [[SimpleAudioEngine sharedEngine] playEffect:soundFileName pitch:1.0 pan:isLeftController ? -1.0 : 1.0 gain:1.0];
         }
-
-		//[livesMeter update];
 	}
 	
-	if ([model lives] == 0) {
-		[controller endGame];
-	}
-	else {
+	if ([model lives] > 0) {
 		[self newTask];
+        [self go];
 	}
 }
 
 - (void)newTask {
 	[model nextTask];
+
 	[left setSolution: [model left]];
 	[right setSolution: [model right]];
     [operation setString: [model operation]];
@@ -95,48 +92,43 @@
 		[[solutionButtons objectAtIndex: i] setSolution: [[solutions objectAtIndex: i] intValue]];
 	}
 	
-	if ([controller gameRunning]) {
-		CCLOG(@"roundtime: %f", [controller roundTime]);
-		[model setTime: [controller roundTime]];
-		[timerView countdown: [NSNumber numberWithFloat: [model time]]];
-	}
+	CCLOG(@"roundtime: %f", [controller roundTime]);
+	[model setTime: [controller roundTime]];
 }
 
 - (void)timeOut {
 	//NSLog(@"timeout links");
 	[model reduceLives];
 	
-	/*[flashingView flashWrong];
-	[[controller soundEngine] soundTimeout];
+	[self flash: NO];
+    
+	[[SimpleAudioEngine sharedEngine] playEffect:@"timeout.caf" pitch:1.0 pan:isLeftController ? -1.0 : 1.0 gain:1.0];
 	
-	[livesMeter update];*/
-	
-	if ([model lives] <= 0) {
-		[controller endGame];
-	}
-	else {
+	if ([model lives] > 0) {
 		[self newTask];
+        [self go];
 	}
 }
 
 - (void)reset {
 	[model reset];
-    [score setString:@"0"];
     currentPitch = kHemiDefaultPitch;
-	//[livesMeter reset];
 }
 
 - (void)pause {
 	//NSLog(@"pause left");
 	[timerView pause];
+    [timer pauseSchedulerAndActions];
 }
+
 
 - (void)resume {
 	[timerView resume];
+    [timer resumeSchedulerAndActions];
 }
 
 - (void)go {
-	[timerView countdown: [NSNumber numberWithFloat: [model time]]];
+    [timer setTotalTime: [model time]];
 }
 
 - (int)livesRemaining {
@@ -151,9 +143,12 @@
 	return [model score];
 }
 
-
 - (void) dealloc
 {
+	[solutionButtons removeAllObjects];
+	[solutionButtons release];
+	[model release];
+    
 	[super dealloc];
 }
 @end

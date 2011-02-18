@@ -7,6 +7,7 @@
 //
 
 #import "TimerView.h"
+#import "BrainController.h"
 
 @interface TimerView() 
 - (void)stopActions;
@@ -15,7 +16,7 @@
 
 @implementation TimerView
 
-@synthesize view;
+@synthesize view, controller;
 
 - (id)init {
 	if ((self = [super init])) {
@@ -75,7 +76,7 @@
 
 	
 	float time = [_time floatValue];
-	float timeOne = 9 * time / 10;
+	float timeOne = 9.5 * time / 10;
 	float timeTwo = time - timeOne;
 	
 	CCScaleTo *shrink = [CCScaleTo actionWithDuration: timeOne scaleX: 2.0/135.0 scaleY:1.0];
@@ -104,7 +105,7 @@
 	[middlePart runAction: shrinkTint];
 	[rightPart runAction: tint3];
 	
-	[circle runAction: [CCSequence actions: [CCDelayTime actionWithDuration: timeOne], disappear, nil]];
+	[circle runAction: [CCSequence actions: [CCDelayTime actionWithDuration: timeOne], disappear, [CCCallFunc actionWithTarget:controller selector:@selector(timeOut)], nil]];
 }
 
 - (void)pause {

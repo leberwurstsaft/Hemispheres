@@ -14,6 +14,9 @@
 	SolutionSprite *representation;
 	
 	int solution;
+    int buttonType;
+    
+    CCParticleSystem *particleSystem;
 }
 
 - (id)initWithColor;

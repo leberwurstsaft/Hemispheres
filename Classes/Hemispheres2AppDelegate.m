@@ -66,7 +66,7 @@
 	//
 	//
 	EAGLView *glView = [EAGLView viewWithFrame:[window bounds]
-								   pixelFormat:kEAGLColorFormatRGB565	// kEAGLColorFormatRGBA8
+								   pixelFormat:kEAGLColorFormatRGBA8	// kEAGLColorFormatRGBA8
 								   depthFormat:0						// GL_DEPTH_COMPONENT16_OES
 						];
 	
@@ -74,8 +74,8 @@
 	[director setOpenGLView:glView];
 	
 //	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
-//	if( ! [director enableRetinaDisplay:YES] )
-//		CCLOG(@"Retina Display Not supported");
+	if( ! [director enableRetinaDisplay:YES] )
+		CCLOG(@"Retina Display Not supported");
 	
 	//
 	// VERY IMPORTANT:
@@ -114,16 +114,26 @@
 	[self removeStartupFlicker];
 	
 	// Run the intro Scene
-	[[CCDirector sharedDirector] runWithScene: [GameScene scene]];		
+	[[CCDirector sharedDirector] runWithScene: [GameScene node]];		
 }
 
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-	[[CCDirector sharedDirector] pause];
+    CCScene * current = [[CCDirector sharedDirector] runningScene];
+
+    if ([current isKindOfClass:[GameScene class]]) {
+        [(GameScene*)current showDrapes:YES];
+    }
+    [[CCDirector sharedDirector] pause];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    CCScene * current = [[CCDirector sharedDirector] runningScene];
+    
+    if ([[current getChildByTag:1] isKindOfClass:[GameScene class]]) {
+        [(GameScene*)[current getChildByTag:1] showDrapes:NO];
+    }
 	[[CCDirector sharedDirector] resume];
 }
 

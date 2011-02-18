@@ -18,12 +18,12 @@
 
 - (id)init {
     self = [super init];
-	[self setLives: 3];
+	lives = 3;
 	time = 8.0;
 	solution = 0;
 	left = 0;
 	right = 0;
-	[self setScore: 0];
+	score = 0;
 	
 	nextTask = 0;
 	
@@ -37,17 +37,21 @@
 - (void)nextTask {}
 
 - (void)reset {
-	time	= 10.0;
-	score	= 0;
-	lives	= 3;
+    CCLOG(@"resetting model");
+	time	= 8.0;
+	[self setScore: 0];
+	[self setLives: 3];
 }
 
 - (void)increaseScore {
-	score++;
+    CCLOG(@"increase score");
+    if (lives > 0) {
+        [self setScore: [self score]+1];
+    }
 }
 
 - (void)reduceLives {
-	lives--;
+	[self setLives: [self lives]-1];
 }
 
 - (BOOL)solutionEquals:(int)_solution {
