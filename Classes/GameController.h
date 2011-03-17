@@ -8,6 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import <GameKit/GameKit.h>
+
+typedef enum  {
+    kNumberTrainingType = 1,
+    kColorTrainingType = 2,
+} TrainingType;
+
+typedef enum {
+    kTrainingStagePreIntroduction = 0,
+    kTrainingStageIntroduction = 1,
+    kTrainingStageRunning = 2,
+    kTrainingStageDone = 3,
+} TrainingStage;
 
 @class BrainController, InfoBarController, LivesMeter;
 
@@ -26,24 +39,67 @@
 	
 	int		personalHighscore;
 	
+    int     trainingGoal;
+    int     trainingToRun;
+    BOOL    trainingRunning;
+    int     trainingStage;
+    
+    NSMutableArray *unsentScores;
+    NSMutableArray *unsentAchievements;
+    
+    NSDate  *startTime;
 }
+
+@property (nonatomic, retain) NSDate *startTime;
+@property (nonatomic, retain) NSMutableDictionary *achievementsDictionary;
 
 @property (nonatomic, readonly) BrainController *rightBrainController;
 @property (nonatomic, readonly) BrainController *leftBrainController;
 
 @property (nonatomic, readonly) BOOL gameRunning;
+@property (nonatomic, readonly) BOOL trainingRunning;
+@property (nonatomic, readonly) int trainingToRun;
+
 @property (nonatomic, readonly) CCNode *view;
+
+- (void)animate;
+- (void)registerObservers;
 
 - (void)showDrapes:(BOOL)_show;
 - (void)pauseGame;
 - (void)resumeGame;
 
-- (void)fadeToGray;
+// - (void)fadeToGray;
 
 - (void)beginNewGame;
 - (void)endGame;
-//- (void)enterScores;
-//- (void)reportScore:(int64_t)score forCategory:(NSString*)category;
+- (double)playingTime;
+- (void)showScoreAndMenu;
+- (void)removeReplayMenu;
+- (void)enableReplayMenu;
+
+// Game Center
+- (void)enterScores;
+- (void)reportScore:(int64_t)score forCategory:(NSString*)category;
+- (void)sendUnsentScores;
+- (void)saveUnsentScores;
+
+- (void)reportAchievementIdentifier:(NSString*)identifier percentComplete:(float)percent;
+- (void)loadAchievements;
+- (GKAchievement*)getAchievementForIdentifier:(NSString*)identifier;
+- (void)sendUnsentAchievements;
+- (void)saveUnsentAchievements;
+- (void)newUnseenAchievements;
+
+// Training
+- (void)runNumberTraining:(int)goal;
+- (void)runColorTraining:(int)goal;
+- (void)beginTraining;
+- (void)repeatTraining;
+- (void)continueTraining;
+- (void)endTraining;
+
+- (void)checkPossibleAchievements;
 - (void)playAgain;
 - (void)exitGame;
 

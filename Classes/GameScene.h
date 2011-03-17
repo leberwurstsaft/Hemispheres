@@ -15,31 +15,30 @@
 #import "SimpleAudioEngine.h"
 #import "CocosDenshion.h"
 #import "CDAudioManager.h"
+#import "TextBoxLayer.h"
 
-@interface GameLayer : CCLayer {
+@interface GameLayer : CCLayer <TextBoxDelegate> {
     GameController *gameController;
+    TextBoxLayer *lostText;
 }
 
+@property (nonatomic, retain) TextBoxLayer *lostText;
+
 - (void)showDrapes:(BOOL)_show;
+- (void)gameLoop:(ccTime) dT;
+- (void)showTextBox:(CGPoint)pos size:(CGSize)size text:(NSString*)text;
 
 @end
 
 @interface GameScene : CCScene {
     GameLayer *gameLayer;
-    
-	int blendFunc, blendFunc2;
 }
 
 - (void)setTouchEnabled:(BOOL)_enable;
 - (void)showDrapes:(BOOL)_show;
+- (void)showTextBox:(CGPoint)pos size:(CGSize)size text:(NSString*)text;
 
-/*
-- (void)menuItem1Touched:(CCMenuItem *)sender;
-- (void)menuItem2Touched:(CCMenuItem *)sender;
- 
-- (void)menuItem3Touched:(CCMenuItem *)sender;
-- (void)menuItem4Touched:(CCMenuItem *)sender;
- */
+
 
 @end
 

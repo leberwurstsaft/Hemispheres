@@ -7,10 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GameKit/GameKit.h>
 
-
-@interface RootViewController : UIViewController {
-
+@interface RootViewController : UIViewController <GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate> {
+    BOOL gameCenterFeaturesEnabled;
 }
+
+@property (nonatomic) BOOL gameCenterFeaturesEnabled;
+
+- (void)authenticateGKPlayer;
+- (void)showLeaderBoard;
+- (BOOL)isGameCenterAvailable;
+- (void)registerForAuthenticationNotification;
+- (void)showAchievements;
 
 @end

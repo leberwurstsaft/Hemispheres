@@ -1,0 +1,15 @@
+info face="AppleCasual" size=220 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=2,2
+common lineHeight=241 base=176 scaleW=512 scaleH=512 pages=1 packed=0
+page id=0 file="bigscore-hd.png"
+chars count=11
+char id=57 x=2 y=1 width=108 height=173 xoffset=12 yoffset=32 xadvance=113 page=0 chnl=0 letter="9"
+char id=56 x=112 y=1 width=108 height=171 xoffset=14 yoffset=31 xadvance=113 page=0 chnl=0 letter="8"
+char id=55 x=222 y=1 width=117 height=168 xoffset=8 yoffset=37 xadvance=113 page=0 chnl=0 letter="7"
+char id=49 x=341 y=1 width=75 height=167 xoffset=29 yoffset=30 xadvance=113 page=0 chnl=0 letter="1"
+char id=54 x=2 y=176 width=113 height=165 xoffset=13 yoffset=29 xadvance=113 page=0 chnl=0 letter="6"
+char id=51 x=117 y=176 width=113 height=161 xoffset=9 yoffset=34 xadvance=113 page=0 chnl=0 letter="3"
+char id=52 x=232 y=176 width=115 height=156 xoffset=12 yoffset=39 xadvance=113 page=0 chnl=0 letter="4"
+char id=53 x=349 y=176 width=101 height=156 xoffset=20 yoffset=35 xadvance=113 page=0 chnl=0 letter="5"
+char id=48 x=2 y=343 width=113 height=153 xoffset=11 yoffset=37 xadvance=113 page=0 chnl=0 letter="0"
+char id=50 x=117 y=343 width=111 height=150 xoffset=18 yoffset=40 xadvance=113 page=0 chnl=0 letter="2"
+char id=32 x=230 y=343 width=0 height=0 xoffset=117 yoffset=196 xadvance=117 page=0 chnl=0 letter=" "

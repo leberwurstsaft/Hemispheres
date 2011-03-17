@@ -22,6 +22,8 @@
 - (id)initWithColor;
 - (id)initWithNumber;
 - (void)effect;
+- (void)effect:(BOOL)right;
+- (void)initParticleSystem;
 
 @property (nonatomic, assign) SolutionSprite *representation;
 @property (nonatomic, assign) int solution;

@@ -13,6 +13,7 @@
     CCNode *view;
     
     NSMutableArray *lives;
+    NSMutableArray *lives2;
     
 }
 

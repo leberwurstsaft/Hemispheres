@@ -11,8 +11,6 @@
 #import "ColorSprite.h"
 #import "SolutionButton.h"
 
-#define		RAND_1_12	arc4random() % 12
-
 @implementation RightBrainController
 
 - (id)init {
@@ -23,15 +21,16 @@
         isLeftController = NO;
         
         
-        CCSprite *palette = [CCSprite spriteWithFile:@"palette.png"];
+        CCSprite *palette = [CCSprite spriteWithSpriteFrameName:@"palette"];
         palette.anchorPoint = ccp(0, 0.5);
         palette.position = ccp(-6, 120);
-        [view addChild: palette];
+        [view addChild: palette z:0];
         
         flashingView = [CCSprite spriteWithSpriteFrameName:@"flash"];
         flashingView.position = ccp(120,160);
         flashingView.flipX = YES;
         flashingView.opacity = 0;
+        flashingView.visible = NO;
         [view addChild:flashingView];
         
 		left = [ColorSprite sprite];
@@ -39,28 +38,28 @@
         operation = [CCLabelBMFont labelWithString:@"+" fntFile:@"numberfont.fnt"];
 
 		left.position = ccp(85, 208);
-		[left setSolution: RAND_1_12];
+		[left setSolution: [model left]];
 		[view addChild:left z:2];
+        
+        [left.texture setAliasTexParameters];
 		
-        operation.position = ccp (138, 222);
+        operation.position = ccp (135, 222);
+        operation.rotation = -10;
+        operation.scale = 0.8;
+        
 		[view addChild: operation z:2];
 		
-        right.position = ccp(180, 238);
-		[right setSolution: RAND_1_12];
+        right.position = ccp(183, 238);
+		[right setSolution: [model right]];
 		[view addChild:right z:2];
 		
-		/*timerView = [[TimerView alloc] init];
-        timerView.controller = self;
-		timerView.view.position = ccp(122, 135);
-		[timerView.view setScaleX: -1.0]; 
-		[view addChild: timerView.view];*/
-		
         timer = [TimerNode node];
-        timer.position = ccp(124, 135);
+        timer.position = ccp(124 , 133);
         timer.controller = self;
-        [view addChild: timer];
+        [view addChild: timer z:2];
         [timer setTimerImage:@"timer2.png"];
 
+        NSArray *solutions = [model possibleSolutions];
         
 		solutionButtons = [[NSMutableArray alloc] init];
 		for (int i = 0; i < 3; i++) {
@@ -79,9 +78,10 @@
                 default:
                     break;
             }
-			[button setSolution: RAND_1_12];
+			[button setSolution: [[solutions objectAtIndex: i] intValue]];
 			[button.representation setTag: i];
 			[view addChild: button.representation z:2];
+            [button initParticleSystem];
 			[solutionButtons addObject: button];
 			[button release];
 		}

@@ -20,12 +20,16 @@
     LivesMeter *livesLeft;
     LivesMeter *livesRight;
     
-    CCSprite *restartButton;
+    CCMenu *restartButton;
     
     CCSprite *border;
 }
 
 @property (nonatomic, assign) CCNode *view;
 @property (nonatomic, assign) GameController *controller;
+
+- (void)enableTouch:(BOOL)_enable;
+- (void)hideReplayButton;
+- (void)reset;
 
 @end

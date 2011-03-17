@@ -1,0 +1,45 @@
+/* 
+ Localizable.strings
+ Hemispheres2
+ 
+ Created by Pit Garbe on 17.02.11.
+ Copyright 2011 __MyCompanyName__. All rights reserved.
+ */
+
+"NO_CHEATING" = "Nicht schummeln!";
+
+"MATH_TASK" = "Wie gut kannst du rechnen? \n Löse 10 Aufgaben um zum zweiten Teil der Anleitung zu gelangen.";
+
+"COLOR_TASK" = "Jetzt musst du 2 Farben miteinander mischen. \n Wähle aus den drei Lösungen die richtige Mischfarbe. \n * \n Du brauchst 10 Punkte um zu bestehen.";
+
+"TRAINING_FAIL" = "Autsch! \n * \n  \n * \n Du hast 3 Fehler gemacht! \n Versuche, \n 10 Punkte zu erreichen! \n * \n Du schaffst es!";
+
+"MATH_TRAINING_WIN" = "* \n * \n Ziemlich leicht, µµµµµµµ stimmt's? \n * \n * \n * \n * Und nun \n µ auf zum \n * \n µ Farben mischen!";
+
+"COLOR_TRAINING_WIN" = "µµµ Bravo!! \n * \n Aber genug mit dem Kindergarten! \n * \n µµµµµµµµµµµµ ... Die wahre Herausforderung ist, beide Aufgaben gleichzeitig zu meistern! \n * \n * \n * \n µµ Viel Glück!";
+
+"ANALYTICS_TITLE" = "Statistiken erlauben?";
+"ANALYTICS_TEXT" = "Hallo, \n
+    der Entwickler möchte gern ein paar Statistiken über die Spieler erheben, damit er daraus lernen kann. \n   Er möchte dieses Wissen nutzen, um das Spiel in Zukunft noch besser zu machen.\n
+                        Willst du das erlauben?\n          (Diese Frage wird nur einmal gestellt.)";
+
+"BUTTON_YES" = "JA, erlauben!";
+"BUTTON_NO" = "NICHT erlauben!";
+
+"LOADING" = "Laden ...";
+
+"OFFLINE_TITLE" = "Kein Internet?";
+"OFFLINE_MESSAGE" = "Das Internet scheint nicht erreichbar zu sein. Bitte überprüfe deine Netzwerkeinstellungen um die Highscores anzeigen zu können.";
+
+"NO_GAMECENTER_TITLE" = "Kein Game Center";
+"NO_GAMECENTER_MESSAGE" = "Dein Gerät hat kein Game Center. Du musst deine Firmware aktualisieren um Highscores und Achievements zu sehen.";
+
+/* Appirater */
+"kAppiraterMessageKey" = "Wenn du %@ unterstützen möchtest, nimm dir bitte einen Moment Zeit und gib eine Bewertung ab. Vielen Dank. \n\n";
+"kAppiraterTitleKey" = "%@ bewerten";
+"kAppiraterNoTextKey" = "Nein, Danke";
+"kAppiraterYesTextKey" = "Ja, bewerten";
+"kAppiraterReminderTextKey" = "Später erinnern";
+
+"MENU" = "Menü";
+"PLAY_AGAIN" = "Nochmal!"; 

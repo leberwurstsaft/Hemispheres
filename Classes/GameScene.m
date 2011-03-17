@@ -20,17 +20,23 @@
 -(id) init
 {
 	if((self = [super init])) {
+        [[CCDirector sharedDirector] setProjection:CCDirectorProjection2D];
 
         CCSpriteFrameCache* frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
 		[frameCache addSpriteFramesWithFile:@"textures.plist"];
+        [frameCache addSpriteFramesWithFile:@"tafel-und-palette.plist"];
+        
 
 		[[CCDirector sharedDirector] setAlphaBlending:YES];
 
         gameLayer = [GameLayer node];
+        CCLOG(@"position: %f, %f", gameLayer.position.x, gameLayer.position.y);
+
         [self addChild: gameLayer];
         gameLayer.tag = 1;
                 
         SimpleAudioEngine *sae = [SimpleAudioEngine sharedEngine];
+        
         if (sae != nil) {
             [sae preloadEffect:@"ka.caf"];
             [sae preloadEffect:@"ow.caf"];
@@ -39,30 +45,6 @@
             [sae preloadEffect:@"timeout.caf"];
         }
         
-
-        
-        /*
-		[CCMenuItemFont setFontName:@"Helvetica-BoldOblique"];
-		[CCMenuItemFont setFontSize:16];
-		
-		CCMenuItemFont *item1 = [CCMenuItemFont itemFromString:@"GL_DIES" target:self selector:@selector(menuItem1Touched:)];
-		item1.tag = 71;
-		CCMenuItemFont *item2 = [CCMenuItemFont itemFromString:@"GL_DAS" target:self selector:@selector(menuItem2Touched:)];
-		item2.tag = 72;
-		CCMenuItemFont *item3 = [CCMenuItemFont itemFromString:@"heller" target:self selector:@selector(menuItem3Touched:)];
-		item3.tag = 73;
-		CCMenuItemFont *item4 = [CCMenuItemFont itemFromString:@"dunkler" target:self selector:@selector(menuItem4Touched:)];
-		item4.tag = 74;
-
-		CCMenu* menu = [CCMenu menuWithItems: item3, item4, nil];
-		menu.tag = 70;
-		
-		menu.position = CGPointMake(screenSize.width / 2, 280);
-		[self addChild:menu];
-	//	[menuLayer setIsTouchEnabled: YES];
-		[menu alignItemsVerticallyWithPadding:10];
-		[menu alignItemsInColumns: [NSNumber numberWithInt: 2], nil];*/
-		
 		gameLayer.isTouchEnabled = NO;
 
 	}
@@ -78,172 +60,31 @@
     [gameLayer showDrapes:_show];
 }
 
-/*
-- (void)menuItem1Touched:(CCMenuItem *)sender {
-	blendFunc++;
-	blendFunc = blendFunc % 8;
-	[self updateGLBlendFunction];
+- (void)showTextBox:(CGPoint)pos size:(CGSize)size text:(NSString*)text {
+    [gameLayer showTextBox:pos size:size text:text];
 }
-
-- (void)menuItem2Touched:(CCMenuItem *)sender {
-	blendFunc2++;
-	blendFunc2 = blendFunc2 % 8;	
-	[self updateGLBlendFunction];
-}
-
-- (void)updateGLBlendFunction {
-	int blendFuncOne;
-	int blendFuncTwo;
-	NSString *blendFuncOneString;
-	NSString *blendFuncTwoString;
-	
-	switch (blendFunc) {
-		case 0:
-			blendFuncOne = GL_ZERO;
-			blendFuncOneString = @"GL_ZERO";
-			break;
-		case 1:
-			blendFuncOne = GL_ONE;
-			blendFuncOneString = @"GL_ONE";
-			break;
-		case 2:
-			blendFuncOne = GL_SRC_COLOR;
-			blendFuncOneString = @"GL_SRC_COLOR";
-			break;
-		case 3:
-			blendFuncOne = GL_ONE_MINUS_SRC_COLOR;
-			blendFuncOneString = @"GL_ONE_MINUS_SRC_COLOR";
-			break;
-		case 4:
-			blendFuncOne = GL_SRC_ALPHA;
-			blendFuncOneString = @"GL_SRC_ALPHA";
-			break;
-		case 5:
-			blendFuncOne = GL_ONE_MINUS_SRC_ALPHA;
-			blendFuncOneString = @"GL_ONE_MINUS_SRC_ALPHA";
-			break;
-		case 6:
-			blendFuncOne = GL_DST_ALPHA;
-			blendFuncOneString = @"GL_DST_ALPHA";
-			break;
-		case 7:
-			blendFuncOne = GL_ONE_MINUS_DST_ALPHA;
-			blendFuncOneString = @"GL_ONE_MINUS_DST_ALPHA";
-			break;
-		default:
-			break;
-	}
-	
-	switch (blendFunc2) {
-		case 0:
-			blendFuncTwo = GL_ZERO;
-			blendFuncTwoString = @"GL_ZERO";
-			break;
-		case 1:
-			blendFuncTwo = GL_ONE;
-			blendFuncTwoString = @"GL_ONE";
-			break;
-		case 2:
-			blendFuncTwo = GL_SRC_COLOR;
-			blendFuncTwoString = @"GL_SRC_COLOR";
-			break;
-		case 3:
-			blendFuncTwo = GL_ONE_MINUS_SRC_COLOR;
-			blendFuncTwoString = @"GL_ONE_MINUS_SRC_COLOR";
-			break;
-		case 4:
-			blendFuncTwo = GL_SRC_ALPHA;
-			blendFuncTwoString = @"GL_SRC_ALPHA";
-			break;
-		case 5:
-			blendFuncTwo = GL_ONE_MINUS_SRC_ALPHA;
-			blendFuncTwoString = @"GL_ONE_MINUS_SRC_ALPHA";
-			break;
-		case 6:
-			blendFuncTwo = GL_DST_ALPHA;
-			blendFuncTwoString = @"GL_DST_ALPHA";
-			break;
-		case 7:
-			blendFuncTwo = GL_ONE_MINUS_DST_ALPHA;
-			blendFuncTwoString = @"GL_ONE_MINUS_DST_ALPHA";
-			break;
-		default:
-			break;
-	}
-	
-	[[NSUserDefaults standardUserDefaults] setInteger:blendFuncOne forKey:@"HemiBlendFuncOne"];
-	[[NSUserDefaults standardUserDefaults] setInteger:blendFuncTwo forKey:@"HemiBlendFuncTwo"];
-	
-	[self removeChildByTag:70 cleanup:YES];
-	
-	[CCMenuItemFont setFontName:@"Helvetica-BoldOblique"];
-	[CCMenuItemFont setFontSize:16];
-	
-	CCMenuItemFont *item1 = [CCMenuItemFont itemFromString:blendFuncOneString target:self selector:@selector(menuItem1Touched:)];
-	item1.tag = 71;
-	CCMenuItemFont *item2 = [CCMenuItemFont itemFromString:blendFuncTwoString target:self selector:@selector(menuItem2Touched:)];
-	item2.tag = 72;
-	CCMenuItemFont *item3 = [CCMenuItemFont itemFromString:@"heller" target:self selector:@selector(menuItem3Touched:)];
-	item3.tag = 73;
-	CCMenuItemFont *item4 = [CCMenuItemFont itemFromString:@"dunkler" target:self selector:@selector(menuItem4Touched:)];
-	item4.tag = 74;
-	
-	CCMenu* menu = [CCMenu menuWithItems:item1, item2, item3, item4, nil];
-	menu.tag = 70;
-	
-	CGSize screenSize = [[CCDirector sharedDirector] winSize];
-
-	menu.position = CGPointMake(screenSize.width / 2, screenSize.height / 2);
-	[self addChild:menu];
-	//	[menuLayer setIsTouchEnabled: YES];
-	[menu alignItemsVerticallyWithPadding:10];
-	[menu alignItemsInColumns:[NSNumber numberWithInt: 2], [NSNumber numberWithInt: 2], nil];
-}
-
-
-- (void)menuItem3Touched:(CCMenuItem *)sender {
-	brightness += 20;
-	if (brightness > 255)
-		brightness = 255;
-    CCLOG(@"brightness: %d", brightness);
-	[(CCLayerColor *)[self getChildByTag:10] setColor:ccc3(brightness, brightness, brightness)];	
-}
-
-- (void)menuItem4Touched:(CCMenuItem *)sender {
-	brightness -= 20;
-	if (brightness < 0)
-		brightness = 0;
-    CCLOG(@"brightness: %d", brightness);
-	[(CCLayerColor *)[self getChildByTag:10] setColor:ccc3(brightness, brightness, brightness)];
-}
-
-
-
-- (void)registerWithTouchDispatcher {
-	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self 
-													 priority:INT_MIN+1 
-											  swallowsTouches:YES];
-}*/
-
 
 
 @end
 
 @implementation GameLayer
 
+@synthesize lostText;
+
 - (id)init {
     if ((self = [super init])) {
         gameController = [[GameController alloc] init];
 		
 		CGSize screenSize = [[CCDirector sharedDirector] winSize];
+
         
         [CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_RGB565];
         
-		CCSprite* background = [CCSprite spriteWithFile:@"background.png"]; // rect:CGRectMake(0, 0, 480, 320)];
-        [CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_Default];
+        CCSpriteFrameCache* frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
+		[frameCache addSpriteFramesWithFile:@"background.plist"];
         
-        //		ccTexParams params = {GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT};
-        //		[[background texture] setTexParameters: &params];
+		CCSprite* background = [CCSprite spriteWithSpriteFrameName:@"background"];
+        [CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_Default];
 		
 		background.position = CGPointMake(screenSize.width / 2, screenSize.height / 2);
         
@@ -255,31 +96,68 @@
     return self;
 }
 
+- (void)showTextBox:(CGPoint)pos size:(CGSize)size text:(NSString*)text {
+    [self removeChildByTag:101 cleanup:YES];
+    
+    TextBoxLayer *textLayer = [[TextBoxLayer alloc] initWithColor:ccc4(0, 0, 0, 140) width:size.width height:size.height padding:0 text:text];
+    textLayer.delegate = self;
+    textLayer.contentSize = size;
+    textLayer.anchorPoint = ccp(0.5, 0.5);
+    textLayer.position = pos;
+    
+    self.lostText = textLayer;
+    
+    [self addChild: lostText z:10 tag:101];
+    [textLayer release];
+    CCLOG(@"start scheduler");
+    [self schedule:@selector(gameLoop:) interval:1/60.0f];
+
+}
+
+- (void)gameLoop:(ccTime)dT {
+    [lostText update:dT];
+}
+
+-(void) textBox:(TextBoxLayer *)tbox didFinishAllTextWithPageCount:(int)pc {
+    [self unschedule:@selector(gameLoop:)];
+	[self removeChild:lostText cleanup:YES];
+    [gameController continueTraining];
+}
+
 - (CGPoint)locationFromTouch:(UITouch *)touch {
 	CGPoint touchLocation = [touch locationInView: [touch view]];
 	return [[CCDirector sharedDirector] convertToGL:touchLocation];
 }
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	
+    
+    BOOL gameRunning = [gameController gameRunning];
+    BOOL trainingRunning = [gameController trainingRunning];
+    int trainingType = [gameController trainingToRun];
     
     if ([touches count] == 1) {
         UITouch *touch = [touches anyObject];
         CGPoint touchLocation = [self locationFromTouch:touch];
 
+        
         for (int i = 0; i < 3; i++) {
             if (ccpDistance([[gameController.leftBrainController.view getChildByTag:i] position], touchLocation) < kHitDistance) {
-                [gameController.leftBrainController effect: i];
-                [gameController.leftBrainController evaluate: i];
+                if ((trainingRunning && trainingType == kNumberTrainingType) || gameRunning) {
+                    [gameController.leftBrainController effect: i];
+                    [gameController.leftBrainController evaluate: i];
+                }
             }
             else if (ccpDistance(ccpAdd([[gameController.rightBrainController.view getChildByTag:i] position], ccp(240,0)), touchLocation) < kHitDistance) {
-                [gameController.rightBrainController effect: i];
-                [gameController.rightBrainController evaluate: i];
+                if ((trainingRunning && trainingType == kColorTrainingType) || gameRunning) {
+                    [gameController.rightBrainController effect: i];
+                    [gameController.rightBrainController evaluate: i];
+                }
             }
         }
     }
     else if ([touches count] == 2) {
-        
+        CCLOG(@"2 touches!");
+
         BOOL firstTouchWasLeft = NO;
         BOOL firstTouchWasRight = NO;
         
@@ -289,20 +167,36 @@
 
             for (int i = 0; i < 3; i++) {
                 if (ccpDistance([[gameController.leftBrainController.view getChildByTag:i] position], touchLocation) < kHitDistance && !firstTouchWasLeft) {
-                    firstTouchWasLeft = YES;
-                    [gameController.leftBrainController effect: i];
-                    [gameController.leftBrainController evaluate: i];
+                    CCLOG(@"hit left: %d", i);
+                    if ((trainingRunning && trainingType == kNumberTrainingType) || gameRunning) {
+                        firstTouchWasLeft = YES;
+                        [gameController.leftBrainController effect: i];
+                        [gameController.leftBrainController evaluate: i];
+                    }
                     break;
                 }
                 else if (ccpDistance(ccpAdd([[gameController.rightBrainController.view getChildByTag:i] position], ccp(240,0)), touchLocation) < kHitDistance && !firstTouchWasRight) {
-                    firstTouchWasRight = YES;
-                    [gameController.rightBrainController effect: i];
-                    [gameController.rightBrainController evaluate: i];
+                    if ((trainingRunning && trainingType == kColorTrainingType) || gameRunning) {
+                        CCLOG(@"hit right: %d", i);
+                        firstTouchWasRight = YES;
+                        [gameController.rightBrainController effect: i];
+                        [gameController.rightBrainController evaluate: i];
+                    }
                     break;
                 }
             }
-            
         }
+    }
+}
+
+- (void)onEnterTransitionDidFinish {
+    
+    BOOL tutorialFinished = [[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresTutorialFinished"];
+    if (!tutorialFinished) {
+        [gameController runNumberTraining: 10];
+    }
+    else {
+        [gameController animate];
     }
 }
 
@@ -312,6 +206,7 @@
 
 - (void)dealloc {
     CCLOG(@"dealloc GameLayer");
+    [lostText release];
     [gameController release];
     [super dealloc];
 }

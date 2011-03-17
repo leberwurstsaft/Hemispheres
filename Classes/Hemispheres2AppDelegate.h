@@ -13,8 +13,16 @@
 @interface Hemispheres2AppDelegate : NSObject <UIApplicationDelegate> {
 	UIWindow			*window;
 	RootViewController	*viewController;
+    BOOL                gameCenterFeaturesEnabled;
 }
 
 @property (nonatomic, retain) UIWindow *window;
+@property (nonatomic, readonly) RootViewController *viewController;
+@property (nonatomic) BOOL gameCenterFeaturesEnabled;
+
+- (void)showLeaderBoard;
+- (void)showAchievements;
+
+- (void)showIntro;
 
 @end

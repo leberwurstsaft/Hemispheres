@@ -12,7 +12,6 @@
 #import "GameController.h"
 
 #import "TimerNode.h"
-#import "TimerView.h"
 
 #import "SimpleAudioEngine.h"
 #import "CocosDenshion.h"
@@ -31,7 +30,6 @@
     
     CCSprite *flashingView;
 
-	TimerView *timerView;
     TimerNode *timer;
 	
 	NSMutableArray *solutionButtons;
@@ -41,6 +39,7 @@
 	GameController *controller;
     
     float currentPitch;
+    float volume;
     
     BOOL isLeftController;
 }

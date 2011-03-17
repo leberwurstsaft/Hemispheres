@@ -1,4 +1,4 @@
-/* 
+﻿/* 
   Localizable.strings
   Hemispheres2
 
@@ -6,5 +6,40 @@
   Copyright 2011 __MyCompanyName__. All rights reserved.
 */
 
-"PLAY" = "Play!";
-"
+
+"NO_CHEATING" = "No cheating!";
+
+"MATH_TASK" = "First, solve some basic math problems. Get 10 right to continue to the next part of the tutorial.";
+
+"COLOR_TASK" = "Now you have to mix the upper 2 colors together. \n Pick the right mix color from the three options on the bottom. \n * \n Go for 10 right mix colors.";
+
+"TRAINING_FAIL" = "Ouch! \n * \n You made three mistakes! \n Try reaching 10 points! \n * \n * \n µµ You can do it!";
+
+"MATH_TRAINING_WIN" = "* \n * \n Pretty easy, µµµµµµµµµ right? \n * \n * \n * \n * Now \n µµ for some \n * \n µµµ color mixing!";
+
+"COLOR_TRAINING_WIN" = "µµµ Bravo!! \n * \n But enough with the kindergarten! \n * \n µµµµµµµµµµµµ ... The real challenge is to keep up with both tasks at once! \n * \n µµµ Good Luck!";
+
+"ANALYTICS_TITLE" = "Some statistics allowed?";
+"ANALYTICS_TEXT" = "Hello, \n
+    the developer would like to collect a few statistics about the game's audience, so he can learn about them. \n   He wants to use this knowledge to make the game even better in the future. \n
+                        Are you going to allow this?\n          (This question will only be asked once.)";
+"BUTTON_YES" = "YES, allow!";
+"BUTTON_NO" = "DON'T allow!";
+
+"LOADING" = "Loading ...";
+
+"OFFLINE_TITLE" = "No Internet?";
+"OFFLINE_MESSAGE" = "The internet appears to be unreachable. Please, check your network settings to show the Highscores.";
+
+"NO_GAMECENTER_TITLE" = "No Game Center";
+"NO_GAMECENTER_MESSAGE" = "Sorry, but your device doesn't have Game Center. You might want to update the firmware to see Highscores and Achievements.";
+
+/* Appirater */
+"kAppiraterMessageKey" = "If you enjoy using %@, would you mind taking a moment to rate it? Thanks for your support! \n\n";
+"kAppiraterTitleKey" = "Rate %@";
+"kAppiraterNoTextKey" = "No, Thanks";
+"kAppiraterYesTextKey" = "Rate now";
+"kAppiraterReminderTextKey" = "Remind me later";
+
+"MENU" = "Menu";
+"PLAY_AGAIN" = "Try again!"; 

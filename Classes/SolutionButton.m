@@ -18,12 +18,6 @@ typedef enum
 	kButtonTypeNumber = 1,
 } ButtonTypes;
 
-@interface SolutionButton()
-
-- (void)initParticleSystem;
-
-@end
-
 
 @implementation SolutionButton
 
@@ -37,8 +31,7 @@ typedef enum
 
 		representation = [ColorSprite sprite];
         
-        [self initParticleSystem];
-        particleSystem.blendFunc = (ccBlendFunc){GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
+       // particleSystem.blendFunc = (ccBlendFunc){GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 
         buttonType = kButtonTypeColor;
 	}
@@ -50,10 +43,9 @@ typedef enum
 
 		representation = [NumberSprite sprite];
         
-        [self initParticleSystem];
-        particleSystem.startColor = (ccColor4F){1.0, 1.0, 1.0, 0.6};
+       /* particleSystem.startColor = (ccColor4F){1.0, 1.0, 1.0, 0.6};
 		particleSystem.endColor = (ccColor4F){1.0, 1.0, 1.0, 0.3};
-        particleSystem.blendFunc = (ccBlendFunc){GL_SRC_ALPHA, GL_ONE};
+        particleSystem.blendFunc = (ccBlendFunc){GL_SRC_ALPHA, GL_ONE}; */
 
         buttonType = kButtonTypeNumber;
 	}
@@ -64,9 +56,18 @@ typedef enum
     particleSystem = [CCParticleSystemQuad particleWithFile:@"explosion.plist"];
 
     particleSystem.positionType = kCCPositionTypeFree;
-    particleSystem.position = ccp(representation.contentSize.width/2.0, representation.contentSize.height/2.0);
+    particleSystem.position = representation.position; //ccp(representation.contentSize.width/2.0, representation.contentSize.height/2.0);
     
-    [representation addChild: particleSystem z:-1];
+    if (buttonType == kButtonTypeNumber) {
+        particleSystem.blendFunc = (ccBlendFunc){GL_DST_COLOR, GL_ONE};
+        particleSystem.life = 0.5;
+       // particleSystem.blendFunc = (ccBlendFunc){GL_ONE, GL_ONE_MINUS_SRC_ALPHA};
+    }
+    else {
+        particleSystem.blendFunc = (ccBlendFunc){GL_ONE, GL_ONE_MINUS_SRC_ALPHA};
+    }
+
+    [[representation parent]  addChild: particleSystem z:1 tag:99];
 }
 
 - (int)solution {
@@ -77,6 +78,25 @@ typedef enum
 	solution = _s;
 	
 	[representation setSolution: solution];
+}
+
+- (void)effect:(BOOL)right {
+    ccColor4F startColor;
+	ccColor4F endColor;
+    
+    if (right) {
+        startColor = (ccColor4F){0.0, 0.8, 0.0, 1.0};
+    }
+    else {
+        startColor = (ccColor4F){1.0, 0.0, 0.0, 1.0};
+    }
+    endColor = startColor;
+    endColor.a = 0.3;
+    
+    particleSystem.startColor = startColor;
+    particleSystem.endColor = endColor;
+    
+    [particleSystem resetSystem];
 }
 
 - (void)effect {

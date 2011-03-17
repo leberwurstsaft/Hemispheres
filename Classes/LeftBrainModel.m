@@ -12,7 +12,8 @@
 @implementation LeftBrainModel
 
 - (void)generateTasks:(int)amount {
-int i;
+   
+    int i;
     int randomNumber;
     
     tasks = [[NSMutableArray alloc] init];
@@ -272,6 +273,11 @@ int i;
 }
 
 - (void)nextTask {
+    if (nextTask >= [tasks count]) {
+        nextTask = 0;
+    }
+    CCLOG(@"loading task # %i", nextTask);
+    
 	NSArray *task       = [tasks objectAtIndex: nextTask];
 	left                = [[task objectAtIndex: 0] integerValue];
 	right               = [[task objectAtIndex: 1] integerValue];

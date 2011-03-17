@@ -18,13 +18,23 @@
         view = [CCNode node];
         
         lives = [[NSMutableArray alloc] initWithCapacity: amount];
+        lives2 = [[NSMutableArray alloc] initWithCapacity: amount];
         
         for (int i = 0; i < amount; i++) {
             CCSprite *sprite = [CCSprite spriteWithSpriteFrameName:@"live"];
             [lives addObject: sprite];
-            //sprite.blendFunc = (ccBlendFunc){GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA};
+//            sprite.blendFunc = (ccBlendFunc){GL_DST_COLOR, GL_ONE};
             sprite.position = ccp(i * 30, 0);
             [view addChild: sprite];
+            
+            CCSprite *sprite2 = [CCSprite spriteWithSpriteFrameName:@"live_off"];
+            [lives2 addObject: sprite2];
+            sprite2.blendFunc = (ccBlendFunc){GL_SRC_ALPHA, GL_ONE};
+            sprite2.position = ccp(i * 30, 0);
+            sprite2.opacity = 0;
+            sprite2.visible = NO;
+            [view addChild: sprite2];
+
         }
         
         [self reset];
@@ -36,26 +46,32 @@
     CCLOG(@"updating livesmeter, remaining: %d", remainingLives);
     int totalLives = [lives count];
     
-    if (remainingLives < 0) {
-        remainingLives = 0;
+    if (remainingLives >= 0 && remainingLives < totalLives) {
+        [(CCSprite*)[lives2 objectAtIndex: remainingLives] runAction:[CCSequence actions:[CCShow action], [CCFadeIn actionWithDuration:0.2], nil]];
+        [(CCSprite*)[lives objectAtIndex: remainingLives] runAction:[CCSequence actions:[CCFadeOut actionWithDuration:0.2], [CCHide action], nil]];
     }
-    for (int i = remainingLives; i < totalLives; i++) {
-        CCLOG(@"changing sprite for live # %d", i);
-        CCSpriteFrame *frame = [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"live_off"];
-        [(CCSprite*)[lives objectAtIndex:i] setDisplayFrame:frame];
+    else if (remainingLives == totalLives) {
+        [self reset];
     }
 }
 
 - (void)reset {
+    for (CCSprite *sprite in lives2) {
+        [sprite stopAllActions];
+        sprite.opacity = 0;
+        sprite.visible = NO;
+    }
+    
     for (CCSprite *sprite in lives) {
-        CCSpriteFrame *frame = [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"live"];
-        [sprite setDisplayFrame:frame];
+        [sprite stopAllActions];
+        sprite.opacity = 255;
+        sprite.visible = YES;
     }
 }
 
 - (void)dealloc {
     [lives release];
-    [view removeAllChildrenWithCleanup:YES];
+    [lives2 release];
     [super dealloc];
 }
 

@@ -19,7 +19,6 @@
         timer = [CCProgressTimer progressWithFile:@"timer.png"];
         timer.type = kCCProgressTimerTypeRadialCW;
         timer.percentage = 100;
-
         [self addChild: timer];
     }
     return self;
@@ -46,7 +45,6 @@
 }
 
 - (void)setTotalTime:(double)time {
-    CCLOG(@"timer has new time");
     if (timer.percentage > 0) {
         [self unscheduleUpdate];
     }

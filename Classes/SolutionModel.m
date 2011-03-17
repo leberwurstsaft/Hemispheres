@@ -28,6 +28,7 @@
 	nextTask = 0;
 	
 	[self generateTasks: 200];
+    [self nextTask];
 	
 	return self;
 }
@@ -41,10 +42,15 @@
 	time	= 8.0;
 	[self setScore: 0];
 	[self setLives: 3];
+    
+    [tasks release];
+    [self generateTasks: 200];
+    nextTask = 0;
+    
+    [self nextTask];
 }
 
 - (void)increaseScore {
-    CCLOG(@"increase score");
     if (lives > 0) {
         [self setScore: [self score]+1];
     }

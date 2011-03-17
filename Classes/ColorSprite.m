@@ -43,40 +43,40 @@
     
     switch (_solution) {
         case 0:
-            _color = (ccColor3B){255, 0, 0};
+            _color = (ccColor3B){195, 0, 0};
             break;
         case 1:
-            _color = (ccColor3B){255, 102, 0};
+            _color = (ccColor3B){210, 100, 0};
             break;
         case 2:
-            _color = (ccColor3B){255, 148, 0};
+            _color = (ccColor3B){235, 160, 0};
             break;
         case 3:
-            _color = (ccColor3B){255, 198, 0};
+            _color = (ccColor3B){255, 209, 0};
             break;
         case 4:
             _color = (ccColor3B){255, 252, 0};
             break;
         case 5:
-            _color = (ccColor3B){141, 199, 0};
+            _color = (ccColor3B){160, 194, 0};
             break;
         case 6:
             _color = (ccColor3B){16, 172, 0};
             break;
         case 7:
-            _color = (ccColor3B){0, 190, 164};
+            _color = (ccColor3B){0, 139, 110};
             break;
         case 8:
-            _color = (ccColor3B){0, 99, 182};
+            _color = (ccColor3B){25, 26, 245};
             break;
         case 9:
-            _color = (ccColor3B){0, 18, 166};
+            _color = (ccColor3B){90, 0, 182};
             break;
         case 10:
-            _color = (ccColor3B){99, 0, 164};
+            _color = (ccColor3B){126, 0, 164};
             break;
         case 11:
-            _color = (ccColor3B){178, 0, 111};
+            _color = (ccColor3B){185, 0, 111};
             break;
         default:
             _color = (ccColor3B){255, 148, 0};
