@@ -91,7 +91,6 @@
 		7347BD48131AEC4A00C475D0 /* tafel-und-palette-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7347BD44131AEC4A00C475D0 /* tafel-und-palette-hd.png */; };
 		7347BD49131AEC4A00C475D0 /* tafel-und-palette.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7347BD45131AEC4A00C475D0 /* tafel-und-palette.plist */; };
 		7347BD4A131AEC4A00C475D0 /* tafel-und-palette.png in Resources */ = {isa = PBXBuildFile; fileRef = 7347BD46131AEC4A00C475D0 /* tafel-und-palette.png */; };
-		7347FE64132FB789000A5E28 /* libisimulate-4.x-opengl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7347FE63132FB789000A5E28 /* libisimulate-4.x-opengl.a */; };
 		7347FE66132FB7CC000A5E28 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7347FE65132FB7CC000A5E28 /* CoreLocation.framework */; };
 		734AFC48130C808F00693419 /* LivesMeter.m in Sources */ = {isa = PBXBuildFile; fileRef = 734AFC47130C808F00693419 /* LivesMeter.m */; };
 		734C4855131EEECA00E7AA5C /* LocalyticsSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 734C4850131EEECA00E7AA5C /* LocalyticsSession.m */; };
@@ -447,7 +446,6 @@
 		7347BD44131AEC4A00C475D0 /* tafel-und-palette-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tafel-und-palette-hd.png"; sourceTree = "<group>"; };
 		7347BD45131AEC4A00C475D0 /* tafel-und-palette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "tafel-und-palette.plist"; sourceTree = "<group>"; };
 		7347BD46131AEC4A00C475D0 /* tafel-und-palette.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tafel-und-palette.png"; sourceTree = "<group>"; };
-		7347FE63132FB789000A5E28 /* libisimulate-4.x-opengl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libisimulate-4.x-opengl.a"; sourceTree = "<group>"; };
 		7347FE65132FB7CC000A5E28 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		734AFC46130C808F00693419 /* LivesMeter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LivesMeter.h; sourceTree = "<group>"; };
 		734AFC47130C808F00693419 /* LivesMeter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LivesMeter.m; sourceTree = "<group>"; };
@@ -746,7 +744,6 @@
 				506EDB88102F4C4000A389B3 /* libz.dylib in Frameworks */,
 				506EDBA5102F4C9F00A389B3 /* AVFoundation.framework in Frameworks */,
 				506EE1A91030508200A389B3 /* libcocos2d libraries.a in Frameworks */,
-				7347FE64132FB789000A5E28 /* libisimulate-4.x-opengl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -824,7 +821,6 @@
 		2D500B1D0D5A766B00DBA0E3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				7347FE63132FB789000A5E28 /* libisimulate-4.x-opengl.a */,
 				73D200B51320F3D80096BC3E /* Appirater */,
 				73D200B11320F3B60096BC3E /* Reachability */,
 				734C484F131EEEA600E7AA5C /* Localytics */,
