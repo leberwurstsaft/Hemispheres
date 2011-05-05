@@ -522,12 +522,13 @@ static const float offset2 = 170;
     [self.view addChild:bigScore z:19];
     
     id sequence = [CCSequence actions: 
-                   [CCRepeat actionWithAction:
-                    [CCSequence actions: 
-                     [CCEaseInOut actionWithAction: [CCRotateTo actionWithDuration:0.15 angle:-10] rate:3.0],
-                     [CCEaseInOut actionWithAction: [CCRotateTo actionWithDuration:0.15 angle: 10] rate:3.0],
-                    nil] times:2],
-                   [CCEaseInOut actionWithAction: [CCRotateTo actionWithDuration:0.2 angle: 0] rate:3.0], nil];
+                        [CCRepeat actionWithAction:
+                            [CCSequence actions: 
+                                [CCEaseInOut actionWithAction: [CCRotateTo actionWithDuration:0.15 angle:-10] rate:3.0],
+                                [CCEaseInOut actionWithAction: [CCRotateTo actionWithDuration:0.15 angle: 10] rate:3.0], nil]
+                            times:2],
+                        [CCEaseInOut actionWithAction: [CCRotateTo actionWithDuration:0.2 angle: 0] rate:3.0],
+                   nil];
     
     [bigScore runAction: [CCSpawn actions:[fade copy], sequence, nil]];
     
