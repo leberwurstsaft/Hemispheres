@@ -16,8 +16,6 @@
 #import "LocalyticsSession.h"
 #import "Appirater.h"
 
-#import "TestScene.h"
-
 @implementation Hemispheres2AppDelegate
 
 @synthesize window, viewController, gameCenterFeaturesEnabled;
@@ -133,16 +131,7 @@
 	// Run the intro Scene
     //id scene = [GameScene node];
 	[[CCDirector sharedDirector] runWithScene: [IntroScene node]];
-    
-#if !defined(DEBUG)
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresWantAnalytics"]) {
-        [[LocalyticsSession sharedLocalyticsSession] startSession:@"6207366bda1eb4b40a855bb-b42ab02c-442d-11e0-c452-007af5bd88a0"];
-    }
-#endif
-    
-    // 403106600 --> Hemispheres
-    [Appirater appLaunchedWithID:403106600];
-    
+        
     return YES;
 }
 
