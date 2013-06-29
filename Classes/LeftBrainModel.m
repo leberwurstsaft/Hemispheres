@@ -3,7 +3,7 @@
 //  Hemispheres
 //
 //  Created by Pit Garbe on 30.08.09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009 Pit Garbe. All rights reserved.
 //
 
 #import "LeftBrainModel.h"

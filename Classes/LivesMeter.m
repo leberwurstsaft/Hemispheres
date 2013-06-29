@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 16.02.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Pit Garbe. All rights reserved.
 //
 
 #import "LivesMeter.h"
@@ -24,14 +24,23 @@
             CCSprite *sprite = [CCSprite spriteWithSpriteFrameName:@"live"];
             [lives addObject: sprite];
 //            sprite.blendFunc = (ccBlendFunc){GL_DST_COLOR, GL_ONE};
-            sprite.position = ccp(i * 30, 0);
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                sprite.position = ccp(i * 60, 0);
+            }
+            else {
+                sprite.position = ccp(i * 30, 0);
+            }
             [view addChild: sprite];
             
             CCSprite *sprite2 = [CCSprite spriteWithSpriteFrameName:@"live_off"];
             [lives2 addObject: sprite2];
             sprite2.blendFunc = (ccBlendFunc){GL_SRC_ALPHA, GL_ONE};
-            sprite2.position = ccp(i * 30, 0);
-            sprite2.opacity = 0;
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                sprite2.position = ccp(i * 60, 0);
+            }
+            else {
+                sprite2.position = ccp(i * 30, 0);
+            }            sprite2.opacity = 0;
             sprite2.visible = NO;
             [view addChild: sprite2];
 

@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 05.02.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Pit Garbe. All rights reserved.
 //
 
 #import "BrainController.h"
@@ -34,13 +34,18 @@
 - (void)flash:(BOOL)_right {
     if (_right) {
         flashingView.color = ccc3(0, 255, 0);
+        flashingView2.color = ccc3(0, 255, 0);
     }
     else {
         flashingView.color = ccc3(255, 0, 0);
+        flashingView2.color = ccc3(255, 0, 0);
     }
     
     flashingView.opacity = 1.0;
     [flashingView runAction: [CCSequence actions: [CCShow action], [CCFadeOut actionWithDuration:0.8], [CCHide action], nil]];
+    
+    flashingView2.opacity = 1.0;
+    [flashingView2 runAction: [CCSequence actions: [CCShow action], [CCFadeOut actionWithDuration:0.8], [CCHide action], nil]];
 }
 
 - (void)evaluate:(int)number {

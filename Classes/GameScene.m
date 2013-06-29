@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 28.01.11.
-//  Copyright __MyCompanyName__ 2011. All rights reserved.
+//  Copyright Pit Garbe 2011. All rights reserved.
 //
 
 // Import the interfaces
@@ -12,7 +12,6 @@
 #import "SolutionButton.h"
 #import "BrainController.h"
 
-#define kHitDistance 33
 
 // GameScene implementation
 @implementation GameScene
@@ -20,12 +19,13 @@
 -(id) init
 {
 	if((self = [super init])) {
-        [[CCDirector sharedDirector] setProjection:CCDirectorProjection2D];
+        [[CCDirector sharedDirector] setProjection:CCDirectorProjection3D];
 
+        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+        
         CCSpriteFrameCache* frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
 		[frameCache addSpriteFramesWithFile:@"textures.plist"];
         [frameCache addSpriteFramesWithFile:@"tafel-und-palette.plist"];
-        
 
 		[[CCDirector sharedDirector] setAlphaBlending:YES];
 
@@ -75,6 +75,15 @@
     if ((self = [super init])) {
         gameController = [[GameController alloc] init];
 		
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            kHitDistance = 66;
+            offsetRightSide = 512;
+        }
+        else {
+            kHitDistance = 33;
+            offsetRightSide = 240;
+        }
+        
 		CGSize screenSize = [[CCDirector sharedDirector] winSize];
 
         
@@ -84,7 +93,8 @@
 		[frameCache addSpriteFramesWithFile:@"background.plist"];
         
 		CCSprite* background = [CCSprite spriteWithSpriteFrameName:@"background"];
-        [CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_Default];
+        [CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_RGBA8888];
+
 		
 		background.position = CGPointMake(screenSize.width / 2, screenSize.height / 2);
         
@@ -139,7 +149,6 @@
         UITouch *touch = [touches anyObject];
         CGPoint touchLocation = [self locationFromTouch:touch];
 
-        
         for (int i = 0; i < 3; i++) {
             if (ccpDistance([[gameController.leftBrainController.view getChildByTag:i] position], touchLocation) < kHitDistance) {
                 if ((trainingRunning && trainingType == kNumberTrainingType) || gameRunning) {
@@ -147,7 +156,7 @@
                     [gameController.leftBrainController evaluate: i];
                 }
             }
-            else if (ccpDistance(ccpAdd([[gameController.rightBrainController.view getChildByTag:i] position], ccp(240,0)), touchLocation) < kHitDistance) {
+            else if (ccpDistance(ccpAdd([[gameController.rightBrainController.view getChildByTag:i] position], ccp(offsetRightSide, 0)), touchLocation) < kHitDistance) {
                 if ((trainingRunning && trainingType == kColorTrainingType) || gameRunning) {
                     [gameController.rightBrainController effect: i];
                     [gameController.rightBrainController evaluate: i];
@@ -175,7 +184,7 @@
                     }
                     break;
                 }
-                else if (ccpDistance(ccpAdd([[gameController.rightBrainController.view getChildByTag:i] position], ccp(240,0)), touchLocation) < kHitDistance && !firstTouchWasRight) {
+                else if (ccpDistance(ccpAdd([[gameController.rightBrainController.view getChildByTag:i] position], ccp(offsetRightSide, 0)), touchLocation) < kHitDistance && !firstTouchWasRight) {
                     if ((trainingRunning && trainingType == kColorTrainingType) || gameRunning) {
                         CCLOG(@"hit right: %d", i);
                         firstTouchWasRight = YES;
@@ -190,8 +199,7 @@
 }
 
 - (void)onEnterTransitionDidFinish {
-    
-    BOOL tutorialFinished = [[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresTutorialFinished"];
+     BOOL tutorialFinished = [[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresTutorialFinished"];
     if (!tutorialFinished) {
         [gameController runNumberTraining: 10];
     }

@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 01.02.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Pit Garbe. All rights reserved.
 //
 
 #import "SolutionButton.h"
@@ -54,6 +54,10 @@ typedef enum
 
 - (void)initParticleSystem {
     particleSystem = [CCParticleSystemQuad particleWithFile:@"explosion.plist"];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        particleSystem.scale = 2.0;
+    }
 
     particleSystem.positionType = kCCPositionTypeFree;
     particleSystem.position = representation.position; //ccp(representation.contentSize.width/2.0, representation.contentSize.height/2.0);

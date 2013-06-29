@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 11.02.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Pit Garbe. All rights reserved.
 //
 
 #import "IntroScene.h"
@@ -56,21 +56,35 @@
             [defaults synchronize];
         }
 
+        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+
         CCSpriteFrameCache* frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
 		[frameCache addSpriteFramesWithFile:@"textures.plist"];
-        [frameCache addSpriteFramesWithFile:@"background-blurred.plist"];
         [frameCache addSpriteFramesWithFile:@"brain.plist"];
         [frameCache addSpriteFramesWithFile:@"title.plist"];
         [frameCache addSpriteFramesWithFile:@"menu.plist"];
 
-        
+        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+        [frameCache addSpriteFramesWithFile:@"background-blurred.plist"];
         CCSprite* background = [CCSprite spriteWithSpriteFrameName:@"background-blurred"];
-        background.position = ccp(240, 160);
+        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            background.position = ccp(512, 384);
+        }
+        else {
+            background.position = ccp(240, 160);
+        }
 		[self addChild:background z:-2 tag:10];
         
         CCSprite* title = [CCSprite spriteWithSpriteFrameName:@"title"];
-        title.anchorPoint = ccp(0, 0);
-        title.position = ccp(5, 200);
+        title.anchorPoint = ccp(0.5, 0);
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            title.position = ccp(512, 500);
+        }
+        else {
+            title.position = ccp(240, 200);
+        }
         CCLOG(@"content size: %f, %f", title.contentSizeInPixels.width, title.contentSizeInPixels.height);
         title.tag = 21;
 		[self addChild:title];
@@ -103,7 +117,13 @@
         
         // hmmmmmm ! 
         CCLOG(@"position: %f, %f", windowSize.width/2.0, windowSize.height/2.0);
-        menu.position = ccp(240 + delta, 170);
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            menu.position = ccp(512 + delta, 390);
+        }
+        else {
+            menu.position = ccp(240 + delta, 170);
+        }
         CCLOG(@"menu position: %f, %f", menu.position.x, menu.position.y);
         menu.anchorPoint = ccp(0.5, 0.5);
         menu.tag = 20;
@@ -141,12 +161,23 @@
         brain.tag = 22;
         brain.scale = 0.6;
         brain.anchorPoint = ccp(0.5, 0.0);
-        brain.position = ccp(240, -1.0);
+
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            brain.position = ccp(512, -1.0);
+        }
+        else {
+            brain.position = ccp(240, -1.0);
+        }
         
         [self addChild: brain];
         
         CCLabelBMFont *loadingText = [CCLabelBMFont labelWithString:@" " fntFile:@"tutorial.fnt"];
-        loadingText.position = ccp(240, 30);
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            loadingText.position = ccp(512.5, 60);
+        }
+        else {
+            loadingText.position = ccp(240, 30);
+        }
         loadingText.opacity = 0;
         [self addChild:loadingText z:2 tag:2];
         [loadingText runAction:[CCFadeIn actionWithDuration:0.3]];
@@ -237,7 +268,9 @@
 - (void) onEnter {
 	[super onEnter];
     
-	
+	//[self performSelector:@selector(animate) withObject:nil afterDelay:1.0];
+    
+    
     NSError *error;
 	NSArray *bundleContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[NSBundle mainBundle] bundlePath] error:&error];
     
@@ -259,11 +292,11 @@
 
             NSRange range = [[file lastPathComponent] rangeOfString:@"-hd"];
             BOOL loadThisImage = NO;
-            if ((range.location > 0 && range.location < 100000000) && CC_CONTENT_SCALE_FACTOR() > 1.0) {
+            if ((range.location > 0 && range.location < 100000000) && (CC_CONTENT_SCALE_FACTOR() > 1.0 || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)) {
                 loadThisImage = YES;
             }
             
-            if (!(range.location > 0 && range.location < 100000000) && CC_CONTENT_SCALE_FACTOR() == 1.0) {
+            if (!(range.location > 0 && range.location < 100000000) && CC_CONTENT_SCALE_FACTOR() == 1.0 && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
                 loadThisImage = YES;
             }
             
@@ -281,7 +314,6 @@
 	[(CCLabelBMFont*)[self getChildByTag:2] setString:NSLocalizedString(@"LOADING", nil)];
     
 	[[CCTextureCache sharedTextureCache] addImageAsync:[textures objectAtIndex:numberOfLoadedTextures] target:self selector:@selector(imageDidLoad:)];
-     
 }
 
 - (void)showAnalyticsConfirmDialog {
@@ -313,6 +345,7 @@
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HemispheresWantAnalytics"];
         
         [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Opt-in to Localytics"];
+        [[LocalyticsSession sharedLocalyticsSession] setOptIn: YES];
 
 	} else {
         CCLOG(@"NO BUTTON");
@@ -321,6 +354,7 @@
         [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Opt-out of Localytics"];
         [[LocalyticsSession sharedLocalyticsSession] close];
         [[LocalyticsSession sharedLocalyticsSession] upload];
+        [[LocalyticsSession sharedLocalyticsSession] setOptIn: NO];
 	}
     
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -329,10 +363,21 @@
 - (void) imageDidLoad:(CCTexture2D*)tex {
 	NSString *plistFile =
     [[(NSString*)[textures objectAtIndex:numberOfLoadedTextures] stringByDeletingPathExtension] stringByAppendingString:@".plist"];
+    CCLOG(@"plistFile = %@", plistFile);
     
 	if([[NSFileManager defaultManager] fileExistsAtPath:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:plistFile]]) {
+        if ([plistFile isEqualToString:@"background.plist"] || [plistFile isEqualToString:@"background-blurred.plist"] || [plistFile isEqualToString:@"background-hd.plist"] || [plistFile isEqualToString:@"background-blurred-hd.plist"] || [plistFile isEqualToString:@"drapes.plist"] || [plistFile isEqualToString:@"drapes-hd.plist"]) {
+            CCLOG(@"set alpha to RGB565");
+            [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGB565];
+        }
+        if ([plistFile isEqualToString:@"tafel-und-palette.plist"] || [plistFile isEqualToString:@"tafel-und-palette-hd.plist"]) {
+            CCLOG(@"set alpha to RGBA4444");
+            [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA4444];
+        }
+        
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:plistFile];
 		CCLOG(@"loading %@", plistFile);
+        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
 	}
     
 	numberOfLoadedTextures++;
@@ -362,7 +407,15 @@
     id scale = [CCScaleTo actionWithDuration:1.0 scale:1.0];
     id scale_ease = [CCEaseOut actionWithAction:scale rate:3.0];
     
-    id move = [CCMoveBy actionWithDuration:1.0 position:ccp(0, -300.5)];
+    float _moveY;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        _moveY = -600.5;
+    }
+    else {
+        _moveY = -300.5;
+    }
+    
+    id move = [CCMoveBy actionWithDuration:1.0 position:ccp(0, _moveY)];
     id move_ease = [CCEaseOut actionWithAction:move rate:3.0];
     
     [(CCLabelBMFont*)[self getChildByTag:2] runAction:[CCFadeOut actionWithDuration:0.3]];

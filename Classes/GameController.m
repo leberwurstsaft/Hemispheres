@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 05.02.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Pit Garbe. All rights reserved.
 //
 
 #import "Hemispheres2AppDelegate.h"
@@ -14,9 +14,7 @@
 #import "InfoBarController.h"
 #import "LivesMeter.h"
 #import <GameKit/GameKit.h>
-
-static const float offset = 240.0;
-static const float offset2 = 170;
+#import "LocalyticsSession.h"
 
 @interface GameController()
 
@@ -39,9 +37,24 @@ static const float offset2 = 170;
 	if (( self = [super init])) {
 		view = [CCNode node];
         
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            offset = 512;
+            offset2 = 340;
+        }
+        else {
+            offset = 240;
+            offset2 = 170;
+        }
+        
         infoBarController = [[InfoBarController alloc] init];
         infoBarController.controller = self;
-        infoBarController.view.position = ccp(240, 440);
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            infoBarController.view.position = ccp(512, 896);
+        }
+        else {
+            infoBarController.view.position = ccp(240, 440);
+        }
         [view addChild: infoBarController.view z:3];
 
 		leftBrainController = [[LeftBrainController alloc] init];
@@ -51,18 +64,35 @@ static const float offset2 = 170;
 
 		rightBrainController = [[RightBrainController alloc] init];
 		rightBrainController.controller = self;
-		rightBrainController.view.position = ccp(240+offset,0);
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            rightBrainController.view.position = ccp(512 + offset, 0);
+        }
+        else {
+            rightBrainController.view.position = ccp(240+offset,0);
+        }
 		[view addChild: rightBrainController.view z:1];
        
-        drapes = [CCSprite spriteWithFile:@"drapes.png" rect: CGRectMake(0, 0, 480, 320)];
-        drapes.position = ccp(240, 160);
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            drapes = [CCSprite spriteWithFile:@"drapes.png" rect: CGRectMake(0, 0, 1024, 768)];
+            drapes.position = ccp(512, 384);
+        }
+        else {
+            drapes = [CCSprite spriteWithFile:@"drapes.png" rect: CGRectMake(0, 0, 480, 320)];
+            drapes.position = ccp(240, 160);
+        }
         ccTexParams params = {GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT};
         [[drapes texture] setTexParameters: &params];
         drapes.visible = NO;
         
         CCLabelBMFont *nonono = [CCLabelBMFont labelWithString:NSLocalizedString(@"NO_CHEATING", nil) fntFile:@"tutorial.fnt"];
         nonono.rotation = -20;
-        nonono.position = ccp(240, 140);
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            nonono.position = ccp(512, 320);
+        }
+        else {
+            nonono.position = ccp(240, 140);
+        }
         [drapes addChild: nonono];
         [view addChild: drapes z:2];
 
@@ -159,18 +189,34 @@ static const float offset2 = 170;
         }
     }
     else if (trainingStage == kTrainingStageIntroduction) {
+        
+        [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Training Started"];
+        numAttemptsColors = 1;
+        numAttemptsNumbers = 1;
+        
         if (trainingToRun == kNumberTrainingType) {
             CCScene *current = [[CCDirector sharedDirector] runningScene];
             if ([current isKindOfClass:[GameScene class]]) {
                 NSString *text = NSLocalizedString(@"MATH_TASK", nil);
-                [(GameScene*)current showTextBox:ccp(265, 70) size:CGSizeMake(200, 157) text:text];
+
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    [(GameScene*)current showTextBox:ccp(542, 140) size:CGSizeMake(400, 314) text:text];
+                }
+                else {
+                    [(GameScene*)current showTextBox:ccp(265, 70) size:CGSizeMake(200, 157) text:text];
+                }
             }
         }
         else if (trainingToRun == kColorTrainingType) {
             CCScene *current = [[CCDirector sharedDirector] runningScene];
             if ([current isKindOfClass:[GameScene class]]) {
                 NSString *text = NSLocalizedString(@"COLOR_TASK", nil);
-                [(GameScene*)current showTextBox:ccp(20, 75) size:CGSizeMake(200, 157) text:text];
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    [(GameScene*)current showTextBox:ccp(40, 150) size:CGSizeMake(400, 314) text:text];
+                }
+                else {
+                    [(GameScene*)current showTextBox:ccp(20, 75) size:CGSizeMake(200, 157) text:text];
+                }
             }
         }
         
@@ -207,10 +253,24 @@ static const float offset2 = 170;
         
         NSString *text = NSLocalizedString(@"TRAINING_FAIL", nil);
         if (trainingToRun == kNumberTrainingType) {
-            [(GameScene*)current showTextBox:ccp(265, 70) size:CGSizeMake(200, 157) text:text];
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                [(GameScene*)current showTextBox:ccp(542, 140) size:CGSizeMake(400, 314) text:text];
+            }
+            else {
+                [(GameScene*)current showTextBox:ccp(265, 70) size:CGSizeMake(200, 157) text:text];
+            }
+            
+            numAttemptsNumbers++;
         }
         else {
-            [(GameScene*)current showTextBox:ccp(20, 75) size:CGSizeMake(200, 157) text:text];
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                [(GameScene*)current showTextBox:ccp(40, 150) size:CGSizeMake(400, 314) text:text];
+            }
+            else {
+                [(GameScene*)current showTextBox:ccp(20, 75) size:CGSizeMake(200, 157) text:text];
+            }
+            
+            numAttemptsColors++;
         }
     }
 }
@@ -248,11 +308,21 @@ static const float offset2 = 170;
                 trainingStage = kTrainingStagePreIntroduction;
                 
                 NSString *text = NSLocalizedString(@"MATH_TRAINING_WIN", nil);
-                [(GameScene*)current showTextBox:ccp(265, 70) size:CGSizeMake(200, 157) text:text];
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    [(GameScene*)current showTextBox:ccp(542, 140) size:CGSizeMake(400, 314) text:text];
+                }
+                else {
+                    [(GameScene*)current showTextBox:ccp(265, 70) size:CGSizeMake(200, 157) text:text];
+                }
             }
             else {
                 NSString *text = NSLocalizedString(@"COLOR_TRAINING_WIN", nil);
-                [(GameScene*)current showTextBox:ccp(20, 75) size:CGSizeMake(200, 157) text:text];
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    [(GameScene*)current showTextBox:ccp(40, 150) size:CGSizeMake(400, 314) text:text];
+                }
+                else {
+                    [(GameScene*)current showTextBox:ccp(20, 75) size:CGSizeMake(200, 157) text:text];
+                }
             }
         }
     }
@@ -264,6 +334,15 @@ static const float offset2 = 170;
         
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HemispheresTutorialFinished"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithInt: numAttemptsNumbers],
+                                    @"number of attempts for number training",
+                                    [NSNumber numberWithInt: numAttemptsColors],
+                                    @"number of attempts for color training",
+                                    nil];
+        [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Training Finished" attributes:dictionary];
+
         
         id tran = [CCTransitionCrossFade transitionWithDuration:0.3 scene:[GameScene node]];
         [[CCDirector sharedDirector] replaceScene: tran];
@@ -293,7 +372,7 @@ static const float offset2 = 170;
 		roundTime = [leftBrainController time];
 	}
 	
-	roundTime -= cbrt((float)[self totalScore]) / 70.0;
+	roundTime -= cbrt((float)[self totalScore]) / 80.0;
 	if (roundTime < 1.0) {
 		roundTime = 1.0;
 	}
@@ -324,9 +403,12 @@ static const float offset2 = 170;
 - (void)reset {
     CCLOG(@"game controller reset");
 	roundTime = 0.0;
+    
+    numResets++;
+    
 	[leftBrainController reset];
 	[rightBrainController reset];
-   // [infoBarController reset];
+
     [leftBrainController newTask];
     [rightBrainController newTask];
     
@@ -336,6 +418,8 @@ static const float offset2 = 170;
 - (void)beginNewGame {
 	gameRunning = YES;
     [self enableTouch:YES];
+    
+    numResets = 0;
 	
 	[leftBrainController go];
 	[rightBrainController go];
@@ -460,7 +544,9 @@ static const float offset2 = 170;
         
         [self pauseGame];
         [self enableTouch:NO];
-        
+
+        int playingTime5 = 5 * floor([self playingTime] / 5.0);
+
         [self checkPossibleAchievements];
         
         // unlock all!
@@ -478,6 +564,20 @@ static const float offset2 = 170;
         [self enterScores];
         
         [self showScoreAndMenu];
+        
+        NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithInt: numResets],
+                                    @"number of resets during game",
+                                    [NSNumber numberWithInt: playingTime5],
+                                    @"playing time during game",
+                                    [NSNumber numberWithInt: [leftBrainController score]],
+                                    @"numbers score",
+                                    [NSNumber numberWithInt: [rightBrainController score]],
+                                    @"colors score",
+                                    [NSNumber numberWithInt: [self totalScore]],
+                                    @"total score",
+                                    nil];
+        [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Game Finished" attributes:dictionary];
     }
 }
 
@@ -499,7 +599,13 @@ static const float offset2 = 170;
     id fade = [CCFadeIn actionWithDuration: 0.6];
     
     CCMenu *menu = [CCMenu menuWithItems:item, item2, nil];
-    [menu alignItemsVerticallyWithPadding:120];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [menu alignItemsVerticallyWithPadding:240];
+    }
+    else {
+        [menu alignItemsVerticallyWithPadding:120];
+    }
     
     // compensate for lousy positioning :(
     double quotient = item2.contentSizeInPixels.width / 2.0;
@@ -507,7 +613,13 @@ static const float offset2 = 170;
     double rest = quotient - ohneRest;
     item2.position = ccpAdd(item2.position, ccp(rest, 0));
     
-    menu.position = ccp(240, 135);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        menu.position = ccp(512, 330);
+    }
+    else {
+        menu.position = ccp(240, 135);
+    }
+    
     menu.visible = NO;
     menu.tag = 30;
     [self.view addChild:menu z:20];
@@ -515,7 +627,13 @@ static const float offset2 = 170;
     [menu runAction: [CCSequence actions:[CCShow action], [fade copy], nil]];
     
     CCLabelBMFont *bigScore = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"%d", [self totalScore]] fntFile:@"bigscore.fnt"];
-    bigScore.position = ccp(240, 140);
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        bigScore.position = ccp(512, 340);
+    }
+    else {
+        bigScore.position = ccp(240, 140);
+    }
     bigScore.opacity = 0;
     bigScore.tag = 31;
     bigScore.rotation = 10;
@@ -535,7 +653,12 @@ static const float offset2 = 170;
     CCSprite *blur = [CCSprite spriteWithSpriteFrameName:@"background-blurred"];
     blur.opacity = 0;
     blur.tag = 32;
-    blur.position = ccp(240, 160);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        blur.position = ccp(512, 384);
+    }
+    else {
+        blur.position = ccp(240, 160);
+    }
     blur.color = ccc3(180, 180, 180);
     [self.view addChild: blur z:-1];
     [blur runAction: fade];

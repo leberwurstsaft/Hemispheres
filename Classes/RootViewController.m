@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 28.01.11.
-//  Copyright __MyCompanyName__ 2011. All rights reserved.
+//  Copyright Pit Garbe 2011. All rights reserved.
 //
 
 //
@@ -62,14 +62,14 @@
 	// Sample: Autorotate only in landscape mode
 	//
 	if( interfaceOrientation == UIInterfaceOrientationLandscapeLeft ) {
-		[[CCDirector sharedDirector] setDeviceOrientation: kCCDeviceOrientationLandscapeRight];
+		[[CCDirector sharedDirector] setDeviceOrientation: kCCDeviceOrientationPortrait];
 	} else if( interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-		[[CCDirector sharedDirector] setDeviceOrientation: kCCDeviceOrientationLandscapeLeft];
+		[[CCDirector sharedDirector] setDeviceOrientation: kCCDeviceOrientationPortraitUpsideDown];
 	}
 	
 	// Since this method should return YES in at least 1 orientation, 
 	// we return YES only in the Portrait orientation
-	return ( interfaceOrientation == UIInterfaceOrientationPortrait );
+	return ( interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight );
 	
 #elif GAME_AUTOROTATION == kGameAutorotationUIViewController
 	//

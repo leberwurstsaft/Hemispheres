@@ -9,7 +9,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/RightBrainController.m"
-         timestampString = "319397373.451889"
+         timestampString = "327252195.26279"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "36"
@@ -21,11 +21,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/RightBrainController.m"
-         timestampString = "319397373.451889"
+         timestampString = "327252195.26279"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "40"
-         endingLineNumber = "40">
+         startingLineNumber = "41"
+         endingLineNumber = "41">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -33,23 +33,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/RightBrainController.m"
-         timestampString = "319403750.598083"
+         timestampString = "327252195.26279"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "46"
-         endingLineNumber = "46">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/RightBrainController.m"
-         timestampString = "319421404.754491"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "56"
-         endingLineNumber = "56">
+         startingLineNumber = "60"
+         endingLineNumber = "60">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -81,7 +69,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/RightBrainController.m"
-         timestampString = "319397373.451889"
+         timestampString = "327252195.26279"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "37"
@@ -98,6 +86,76 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "19"
          endingLineNumber = "19">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Classes/Hemispheres2AppDelegate.m"
+         timestampString = "327334309.515719"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "51"
+         endingLineNumber = "51"
+         landmarkName = "-removeStartupFlicker"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Classes/Hemispheres2AppDelegate.m"
+         timestampString = "327334309.515719"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "50"
+         endingLineNumber = "50"
+         landmarkName = "-removeStartupFlicker"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Classes/Hemispheres2AppDelegate.m"
+         timestampString = "327093011.280722"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "35"
+         endingLineNumber = "35"
+         landmarkName = "-removeStartupFlicker"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Classes/Hemispheres2AppDelegate.m"
+         timestampString = "327093011.632945"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "33"
+         endingLineNumber = "33"
+         landmarkName = "-removeStartupFlicker"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Classes/GameController.m"
+         timestampString = "327332952.665936"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "355"
+         endingLineNumber = "355"
+         landmarkName = "-registerObservers"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

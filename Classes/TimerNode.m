@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 17.02.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Pit Garbe. All rights reserved.
 //
 
 #import "TimerNode.h"
@@ -26,10 +26,7 @@
 
 - (void)setTimerImage:(NSString *)image {
     [timer initWithFile: image];
-    if ([image isEqualToString:@"timer2.png"]) {
-        timer.type = kCCProgressTimerTypeRadialCCW;
-        timer.percentage = 100;
-    }
+    timer.percentage = 100;
 }
 
 - (void)update:(ccTime)delta {

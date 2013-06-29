@@ -38,14 +38,22 @@
         CCLayerColor *bg = [CCLayerColor layerWithColor: ccc4(0, 0, 0, 0)];
         [self addChild: bg z:0 tag:1];
 
+        
 		CCLabelBMFont *headerLabel = [CCLabelBMFont labelWithString:title fntFile:@"tutorial.fnt"];
 		[headerLabel setAnchorPoint:ccp(0.5, 1.0)];
 		[headerLabel setPosition:ccp(self.contentSize.width/2, self.contentSize.height - 10)];
         headerLabel.opacity = 0;
 		[self addChild:headerLabel z:1 tag:2];
         
+        
+        CCLabelTTF *messageLabel;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            messageLabel = [CCLabelTTF labelWithString:NSLocalizedString(@"ANALYTICS_TEXT", nil) dimensions:CGSizeMake(800, 400) alignment:UITextAlignmentLeft fontName:@"ArialRoundedMTBold" fontSize:32];
+        }
+        else {
+            messageLabel = [CCLabelTTF labelWithString:NSLocalizedString(@"ANALYTICS_TEXT", nil) dimensions:CGSizeMake(400, 200) alignment:UITextAlignmentLeft fontName:@"ArialRoundedMTBold" fontSize:16];
+        }
 
-        CCLabelTTF *messageLabel = [CCLabelTTF labelWithString:NSLocalizedString(@"ANALYTICS_TEXT", nil) dimensions:CGSizeMake(400, 200) alignment:UITextAlignmentLeft fontName:@"ArialRoundedMTBold" fontSize:16];
         messageLabel.color = ccc3(255, 255, 200);
 
 		[messageLabel setAnchorPoint:ccp(0.5, 0.5)];
@@ -53,9 +61,16 @@
         messageLabel.opacity = 0;
 		[self addChild:messageLabel z:1 tag:3];
         
-		self.menu = [CCMenu menuWithItems: nil];
+        self.menu = [CCMenu menuWithItems: nil];
 		[self.menu setAnchorPoint:ccp(0.5,0)];
-		[self.menu setPosition:ccp(self.contentSize.width/2, 20.5)];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self.menu setPosition:ccp(self.contentSize.width/2, 40)];
+        }
+        else {
+            [self.menu setPosition:ccp(self.contentSize.width/2, 20.5)];
+        }
+        
 		[self addChild:self.menu z:1 tag:4];
 	}
 	return self;

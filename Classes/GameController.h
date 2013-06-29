@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 05.02.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Pit Garbe. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -27,6 +27,8 @@ typedef enum {
 @interface GameController : NSObject {
 	CCNode *view;
 	
+    float offset, offset2;
+    
 	BrainController *rightBrainController;
 	BrainController	*leftBrainController;
     InfoBarController *infoBarController;
@@ -43,6 +45,9 @@ typedef enum {
     int     trainingToRun;
     BOOL    trainingRunning;
     int     trainingStage;
+    
+    int     numAttemptsNumbers, numAttemptsColors;
+    int     numResets;
     
     NSMutableArray *unsentScores;
     NSMutableArray *unsentAchievements;

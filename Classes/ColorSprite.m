@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 01.02.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Pit Garbe. All rights reserved.
 //
 
 #import "ColorSprite.h"
@@ -21,7 +21,7 @@
 
 -(id) initWithColor
 {
-    [CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_RGBA8888];
+//    [CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_RGBA8888];
     
     int splashNumber = arc4random()%5;
     
@@ -29,7 +29,7 @@
 	{
 
 	}
-    [CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_Default];
+//    [CCTexture2D setDefaultAlphaPixelFormat:kTexture2DPixelFormat_Default];
 	return self;
 }
 

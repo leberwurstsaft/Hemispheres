@@ -1,9 +1,8 @@
 //
 //  GameConfig.h
-//  Hemispheres2
 //
-//  Created by Pit Garbe on 28.01.11.
-//  Copyright __MyCompanyName__ 2011. All rights reserved.
+//  Created by Pit Garbe on 14.05.11.
+//  Copyright Pit Garbe 2011. All rights reserved.
 //
 
 #ifndef __GAME_CONFIG_H
@@ -22,7 +21,24 @@
 //
 // Define here the type of autorotation that you want for your game
 //
-#define GAME_AUTOROTATION kGameAutorotationCCDirector
 
+// 3rd generation and newer devices: Rotate using UIViewController. Rotation should be supported on iPad apps.
+// TIP:
+// To improve the performance, you should set this value to "kGameAutorotationNone" or "kGameAutorotationCCDirector"
+#if defined(__ARM_NEON__) || TARGET_IPHONE_SIMULATOR
+#define GAME_AUTOROTATION kGameAutorotationUIViewController
+
+// ARMv6 (1st and 2nd generation devices): Don't rotate. It is very expensive
+#elif __arm__
+#define GAME_AUTOROTATION kGameAutorotationNone
+
+
+// Ignore this value on Mac
+#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+
+#else
+#error(unknown architecture)
+#endif
 
 #endif // __GAME_CONFIG_H
+

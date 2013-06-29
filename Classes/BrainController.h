@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 05.02.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Pit Garbe. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -28,7 +28,7 @@
 	SolutionSprite *right;
     CCLabelBMFont *operation;
     
-    CCSprite *flashingView;
+    CCSprite *flashingView, *flashingView2;
 
     TimerNode *timer;
 	

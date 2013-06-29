@@ -3,7 +3,7 @@
 //  TextBoxLayerSample
 //
 //  Created by Fabio Rodella on 1/19/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Pit Garbe. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

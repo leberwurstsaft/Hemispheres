@@ -7,15 +7,15 @@
 		<key>background-blurred</key>
 		<dict>
 			<key>frame</key>
-			<string>{{2,2},{964,644}}</string>
+			<string>{{0,0},{1024,768}}</string>
 			<key>offset</key>
 			<string>{0,0}</string>
 			<key>rotated</key>
 			<false/>
 			<key>sourceColorRect</key>
-			<string>{{0,0},{964,644}}</string>
+			<string>{{0,0},{1024,768}}</string>
 			<key>sourceSize</key>
-			<string>{964,644}</string>
+			<string>{1024,768}</string>
 		</dict>
 	</dict>
 	<key>metadata</key>
@@ -25,7 +25,7 @@
 		<key>size</key>
 		<string>{1024,1024}</string>
 		<key>textureFileName</key>
-		<string>background-blurred-hd.pvr.ccz</string>
+		<string>background-blurred-hd.jpg</string>
 	</dict>
 </dict>
 </plist>

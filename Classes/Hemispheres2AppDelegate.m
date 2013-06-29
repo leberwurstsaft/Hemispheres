@@ -3,7 +3,7 @@
 //  Hemispheres2
 //
 //  Created by Pit Garbe on 28.01.11.
-//  Copyright __MyCompanyName__ 2011. All rights reserved.
+//  Copyright Pit Garbe 2011. All rights reserved.
 //
 
 #import "cocos2d.h"
@@ -30,13 +30,24 @@
 	// Uncomment the following code if you Application only supports landscape mode
 	//
 #if GAME_AUTOROTATION == kGameAutorotationUIViewController
-
+    CCLOG(@"removing startup flicker");
 	CC_ENABLE_DEFAULT_GL_STATES();
 	CCDirector *director = [CCDirector sharedDirector];
 	CGSize size = [director winSize];
-	CCSprite *sprite = [CCSprite spriteWithFile:@"Default.png"];
+    CCSprite *sprite;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        sprite = [CCSprite spriteWithFile:@"Default-Landscape~ipad.png"];
+    }
+    else {
+        if (CC_CONTENT_SCALE_FACTOR() == 2.0) {
+            sprite = [CCSprite spriteWithFile:@"Default@2x.png"];
+        }
+        else {
+            sprite = [CCSprite spriteWithFile:@"Default.png"];
+        }
+        sprite.rotation = +90;
+    }
 	sprite.position = ccp(size.width/2, size.height/2);
-	sprite.rotation = +90;
 	[sprite visit];
 	[[director openGLView] swapBuffers];
 	CC_ENABLE_DEFAULT_GL_STATES();
@@ -95,7 +106,7 @@
 #if GAME_AUTOROTATION == kGameAutorotationUIViewController
 	[director setDeviceOrientation:kCCDeviceOrientationPortrait];
 #else
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeRight];
+	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 #endif
 	
 	[director setAnimationInterval:1.0/60];
@@ -117,15 +128,17 @@
 
 	
 	// Removes the startup flicker
-	// [self removeStartupFlicker];
+	[self removeStartupFlicker];
 	
 	// Run the intro Scene
     //id scene = [GameScene node];
 	[[CCDirector sharedDirector] runWithScene: [IntroScene node]];
     
+#if !defined(DEBUG)
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresWantAnalytics"]) {
         [[LocalyticsSession sharedLocalyticsSession] startSession:@"6207366bda1eb4b40a855bb-b42ab02c-442d-11e0-c452-007af5bd88a0"];
     }
+#endif
     
     // 403106600 --> Hemispheres
     [Appirater appLaunchedWithID:403106600];
@@ -161,27 +174,33 @@
 -(void) applicationDidEnterBackground:(UIApplication*)application {
 	[[CCDirector sharedDirector] stopAnimation];
     
+#if !defined(DEBUG)
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresWantAnalytics"]) {
         [[LocalyticsSession sharedLocalyticsSession] close];
         [[LocalyticsSession sharedLocalyticsSession] upload];
     }
+#endif
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application {
 	[[CCDirector sharedDirector] startAnimation];
     [Appirater applicationWillEnterForeground];
     
+#if !defined(DEBUG)
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresWantAnalytics"]) {
         [[LocalyticsSession sharedLocalyticsSession] resume];
         [[LocalyticsSession sharedLocalyticsSession] upload];
     }
+#endif
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+#if !defined(DEBUG)
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresWantAnalytics"]) {
         [[LocalyticsSession sharedLocalyticsSession] close];
         [[LocalyticsSession sharedLocalyticsSession] upload];
     }
+#endif
     
 	CCDirector *director = [CCDirector sharedDirector];
 	

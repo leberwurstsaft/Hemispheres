@@ -7,15 +7,15 @@
 		<key>background</key>
 		<dict>
 			<key>frame</key>
-			<string>{{2,2},{484,324}}</string>
+			<string>{{0,0},{512,384}}</string>
 			<key>offset</key>
 			<string>{0,0}</string>
 			<key>rotated</key>
 			<false/>
 			<key>sourceColorRect</key>
-			<string>{{0,0},{484,324}}</string>
+			<string>{{0,0},{512,384}}</string>
 			<key>sourceSize</key>
-			<string>{484,324}</string>
+			<string>{512,384}</string>
 		</dict>
 	</dict>
 	<key>metadata</key>
@@ -25,7 +25,7 @@
 		<key>size</key>
 		<string>{512,512}</string>
 		<key>textureFileName</key>
-		<string>background.pvr.ccz</string>
+		<string>background.jpg</string>
 	</dict>
 </dict>
 </plist>
