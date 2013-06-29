@@ -14,7 +14,6 @@
 #import "InfoBarController.h"
 #import "LivesMeter.h"
 #import <GameKit/GameKit.h>
-#import "LocalyticsSession.h"
 
 @interface GameController()
 
@@ -189,8 +188,7 @@
         }
     }
     else if (trainingStage == kTrainingStageIntroduction) {
-        
-        [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Training Started"];
+
         numAttemptsColors = 1;
         numAttemptsNumbers = 1;
         
@@ -341,9 +339,7 @@
                                     [NSNumber numberWithInt: numAttemptsColors],
                                     @"number of attempts for color training",
                                     nil];
-        [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Training Finished" attributes:dictionary];
 
-        
         id tran = [CCTransitionCrossFade transitionWithDuration:0.3 scene:[GameScene node]];
         [[CCDirector sharedDirector] replaceScene: tran];
     }
@@ -577,7 +573,6 @@
                                     [NSNumber numberWithInt: [self totalScore]],
                                     @"total score",
                                     nil];
-        [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Game Finished" attributes:dictionary];
     }
 }
 

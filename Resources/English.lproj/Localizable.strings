@@ -34,12 +34,6 @@
 "NO_GAMECENTER_TITLE" = "No Game Center";
 "NO_GAMECENTER_MESSAGE" = "Sorry, but your device doesn't have Game Center. You might want to update the firmware to see Highscores and Achievements.";
 
-/* Appirater */
-"kAppiraterMessageKey" = "If you enjoy using %@, would you mind taking a moment to rate it? Thanks for your support! \n\n";
-"kAppiraterTitleKey" = "Rate %@";
-"kAppiraterNoTextKey" = "No, Thanks";
-"kAppiraterYesTextKey" = "Rate now";
-"kAppiraterReminderTextKey" = "Remind me later";
 
 "MENU" = "Menu";
 "PLAY_AGAIN" = "Try again!"; 

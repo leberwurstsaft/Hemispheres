@@ -13,8 +13,6 @@
 #import "GameScene.h"
 #import "IntroScene.h"
 #import "RootViewController.h"
-#import "LocalyticsSession.h"
-#import "Appirater.h"
 
 @implementation Hemispheres2AppDelegate
 
@@ -101,12 +99,12 @@
 	// By default, this template only supports Landscape orientations.
 	// Edit the RootViewController.m file to edit the supported orientations.
 	//
-#if GAME_AUTOROTATION == kGameAutorotationUIViewController
-	[director setDeviceOrientation:kCCDeviceOrientationPortrait];
-#else
+//#if GAME_AUTOROTATION == kGameAutorotationUIViewController
+//	[director setDeviceOrientation:kCCDeviceOrientationPortrait];
+//#else
 	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
-#endif
-	
+//#endif
+
 	[director setAnimationInterval:1.0/60];
 	[director setDisplayFPS:NO];
 	
@@ -162,35 +160,14 @@
 
 -(void) applicationDidEnterBackground:(UIApplication*)application {
 	[[CCDirector sharedDirector] stopAnimation];
-    
-#if !defined(DEBUG)
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresWantAnalytics"]) {
-        [[LocalyticsSession sharedLocalyticsSession] close];
-        [[LocalyticsSession sharedLocalyticsSession] upload];
     }
-#endif
-}
 
 -(void) applicationWillEnterForeground:(UIApplication*)application {
 	[[CCDirector sharedDirector] startAnimation];
-    [Appirater applicationWillEnterForeground];
-    
-#if !defined(DEBUG)
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresWantAnalytics"]) {
-        [[LocalyticsSession sharedLocalyticsSession] resume];
-        [[LocalyticsSession sharedLocalyticsSession] upload];
-    }
-#endif
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-#if !defined(DEBUG)
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresWantAnalytics"]) {
-        [[LocalyticsSession sharedLocalyticsSession] close];
-        [[LocalyticsSession sharedLocalyticsSession] upload];
-    }
-#endif
-    
+
 	CCDirector *director = [CCDirector sharedDirector];
 	
 	[[director openGLView] removeFromSuperview];

@@ -34,12 +34,6 @@
 "NO_GAMECENTER_TITLE" = "Kein Game Center";
 "NO_GAMECENTER_MESSAGE" = "Dein Gerät hat kein Game Center. Du musst deine Firmware aktualisieren um Highscores und Achievements zu sehen.";
 
-/* Appirater */
-"kAppiraterMessageKey" = "Wenn du %@ unterstützen möchtest, nimm dir bitte einen Moment Zeit und gib eine Bewertung ab. Vielen Dank. \n\n";
-"kAppiraterTitleKey" = "%@ bewerten";
-"kAppiraterNoTextKey" = "Nein, Danke";
-"kAppiraterYesTextKey" = "Ja, bewerten";
-"kAppiraterReminderTextKey" = "Später erinnern";
 
 "MENU" = "Menü";
 "PLAY_AGAIN" = "Nochmal!"; 

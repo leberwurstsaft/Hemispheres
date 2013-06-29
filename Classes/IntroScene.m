@@ -11,7 +11,6 @@
 #import "Hemispheres2AppDelegate.h"
 #import "RootViewController.h"
 #import "CCLayerDialog.h"
-#import "LocalyticsSession.h"
 #import <GameKit/GameKit.h>
 
 @implementation IntroScene
@@ -316,50 +315,6 @@
 	[[CCTextureCache sharedTextureCache] addImageAsync:[textures objectAtIndex:numberOfLoadedTextures] target:self selector:@selector(imageDidLoad:)];
 }
 
-- (void)showAnalyticsConfirmDialog {
-    CCLOG(@"confirm analytics");
-    
-    BOOL decided = [[NSUserDefaults standardUserDefaults] boolForKey:@"HemispheresDecidedOnAnalytics"];
-    
-    if (!decided) {
-        // run Analytics once, to get info on device, and tag event in case of disallowance. Then never again.
-        [[LocalyticsSession sharedLocalyticsSession] startSession:@"6207366bda1eb4b40a855bb-b42ab02c-442d-11e0-c452-007af5bd88a0"];
-        
-        CCLayerDialog *dialog = [CCLayerDialog
-                                 initWithTitle: NSLocalizedString(@"ANALYTICS_TITLE", @"")
-                                 message: NSLocalizedString(@"ANALYTICS_TEXT", @"")
-                                 target: self
-                                 selector: @selector(onDialogButton:)];
-        [dialog addButtonWithTitle:NSLocalizedString(@"BUTTON_YES", @"")];
-        [dialog addButtonWithTitle:NSLocalizedString(@"BUTTON_NO", @"")];
-        [dialog show:self];
-    }
-}
-
-- (void)onDialogButton:(NSInteger) buttonIndex
-{
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HemispheresDecidedOnAnalytics"];
-    
-	if(buttonIndex==0){
-        CCLOG(@"YES BUTTON");
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HemispheresWantAnalytics"];
-        
-        [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Opt-in to Localytics"];
-        [[LocalyticsSession sharedLocalyticsSession] setOptIn: YES];
-
-	} else {
-        CCLOG(@"NO BUTTON");
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"HemispheresWantAnalytics"];
-        
-        [[LocalyticsSession sharedLocalyticsSession] tagEvent:@"Opt-out of Localytics"];
-        [[LocalyticsSession sharedLocalyticsSession] close];
-        [[LocalyticsSession sharedLocalyticsSession] upload];
-        [[LocalyticsSession sharedLocalyticsSession] setOptIn: NO];
-	}
-    
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
 - (void) imageDidLoad:(CCTexture2D*)tex {
 	NSString *plistFile =
     [[(NSString*)[textures objectAtIndex:numberOfLoadedTextures] stringByDeletingPathExtension] stringByAppendingString:@".plist"];
@@ -424,7 +379,7 @@
     
     
     [(CCMenu*)[self getChildByTag:25] runAction: [CCSequence actions:[CCDelayTime actionWithDuration:1.0], [CCShow action], [CCFadeIn actionWithDuration:0.3], nil]];
-    [(CCMenu*)[self getChildByTag:20] runAction: [CCSequence actions:[CCDelayTime actionWithDuration:1.0], [CCShow action], [CCFadeIn actionWithDuration:0.3], [CCCallFunc actionWithTarget:self selector:@selector(showAnalyticsConfirmDialog)], nil]];
+    [(CCMenu*)[self getChildByTag:20] runAction: [CCSequence actions:[CCDelayTime actionWithDuration:1.0], [CCShow action], [CCFadeIn actionWithDuration:0.3], nil]];
 }
 
 - (void) dealloc {
