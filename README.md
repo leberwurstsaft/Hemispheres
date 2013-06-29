@@ -8,3 +8,7 @@ If you want to support me, you can buy it at https://itunes.apple.com/app/hemisp
 Open sourced as part of https://objectivechackathon.appspot.com
 
 **Note:** This project is currently undergoing an upgrade to cocos2d v2, so right now you probably can't just run it even if you were to import cocos2d v1. I will try to finish the upgrade in a timely manner.
+
+###Screenshot
+
+![Screenshot](http://hemispheres.leberwurstsaft.de/screen.png)
