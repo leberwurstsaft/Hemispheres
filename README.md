@@ -12,3 +12,7 @@ Open sourced as part of https://objectivechackathon.appspot.com
 ###Screenshot
 
 ![Screenshot](http://hemispheres.leberwurstsaft.de/screen.png)
+
+## License
+
+Hemispheres is available under the MIT license (minus the right to sell unchanged). See the LICENSE file for more info.
